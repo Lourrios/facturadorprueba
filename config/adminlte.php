@@ -336,7 +336,7 @@ return [
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => 'Roles por usuario',
+            'text' => 'Asignar roles',
             'url' => 'usuarios',
             'icon' => 'fas fa-fw fa-user',
             'can'  => 'ver-usuarios',
@@ -351,7 +351,7 @@ return [
          ['header' => 'Panel de clientes'],
          [
             'text' => 'Clientes',
-            'url' => 'admin/settings',
+            'url' => 'clientes',
             'icon' => 'fas fa-fw fa-user',
         ],
          ['header' => 'Panel de Facturas'],

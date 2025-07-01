@@ -44,6 +44,25 @@
                                         </div>
                                     </div>                                                                
                                     
+                                    <div class="col-md-4 col-xl-4">
+                                    <div class="card bg-c-yellow order-card">
+                                        <div class="card-block">
+                                            <h5>Clientes</h5>                                               
+                                            @php
+                                                use App\Models\Cliente;
+                                                $cant_clientes = Cliente::count();                                                
+                                            @endphp
+                                            <h2 class="text-right">
+                                                <i class="fa fa-address-book f-left"></i>
+                                                <span>{{ $cant_clientes }}</span>
+                                            </h2>
+                                            <p class="m-b-0 text-right">
+                                                <a href="/clientes" class="text-black">Ver más</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
                                                
                         </div>
                     </div>

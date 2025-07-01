@@ -532,6 +532,18 @@ return [
                 ],
             ],
         ],
+
+        'Livewire' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js', // Requerido si usás Alpine (Livewire v3)
+                ],
+            ],
+        ],
+
     ],
 
     /*

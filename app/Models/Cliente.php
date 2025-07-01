@@ -20,4 +20,18 @@ class Cliente extends Model
     {
         return $this->hasMany(Factura::class);
     }
+
+    public function scopeBuscar($query, $termino)
+    {
+        if (!empty($termino)) {
+            return $query->where(function ($q) use ($termino) {
+                $q->where('razon_social', 'like', '%' . $termino . '%')
+                ->orWhere('cuil', 'like', '%' . $termino . '%')
+                ->orWhere('email', 'like', '%' . $termino . '%')
+                ->orWhere('telefono', 'like', '%' . $termino . '%');
+            });
+        }
+        return $query;
+    }
+
 }

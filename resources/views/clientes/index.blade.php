@@ -15,6 +15,13 @@
             <a class="btn btn-warning" href="{{ route('clientes.create') }}">Nuevo</a>
         @endcan
 
+        <form method="GET" action="{{ route('clientes.index') }}" class="mb-3">
+            <div class="input-group">
+                <input type="text" name="buscar" class="form-control" placeholder="Buscar clientes..." value="{{ request('buscar') }}" autofocus>
+                <button class="btn btn-primary" type="submit">Buscar</button>
+            </div>
+        </form>
+
         <table class="table table-striped mt-2">
             <thead style="background-color:#6777ef">  
                 <th style="display: none;">ID</th>                                   
@@ -59,7 +66,7 @@
 
         <!-- Centramos la paginación a la derecha -->
         <div class="pagination justify-content-end">
-            {!! $clientes->links() !!}
+            {{ $clientes->appends(['buscar' => request('buscar')])->links() }}
         </div>
     @endcan
 @stop

@@ -15,12 +15,15 @@ class ClienteController extends Controller
          $this->middleware('permission:editar-clientes', ['only' => ['edit','update']]);
          $this->middleware('permission:borrar-clientes', ['only' => ['destroy']]);
     }
-    public function index()
+    public function index(Request $request)
     {
-        $clientes = Cliente::where('activo', true)->paginate(5);
-        return view('clientes.index', compact('clientes'));
+        $clientes = Cliente::buscar($request->input('buscar'))
+                    ->where('activo', true)
+                    ->paginate(5);
 
+        return view('clientes.index', compact('clientes'));
     }
+
 
     /**
      * Show the form for creating a new resource.

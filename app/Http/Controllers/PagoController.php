@@ -2,16 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Factura;
+use App\Models\Pago;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 class PagoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $busqueda = $request->input('busqueda');
+
+        $pagos = Pago::with('factura')
+        ->when($busqueda, function($query, $busqueda) {
+            return $query->where('fecha_pago', 'like', "%$busqueda%")
+                        ->orWhere('metodo_pago', 'like', "$busqueda")
+                        ->orWhereHas('factura', function ($q) use ($busqueda) {
+                            $q->where('nro_factura', 'like', "$busqueda");  
+                        });
+        })->orderBy('id', 'desc')
+        ->paginate(5);
+
+        
+        return view('pagos.index', compact('pagos','busqueda'));
     }
 
     /**
@@ -19,7 +36,7 @@ class PagoController extends Controller
      */
     public function create()
     {
-        //
+        return view('pagos.create');
     }
 
     /**
@@ -27,7 +44,34 @@ class PagoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'monto' => 'required|numeric|min:0|max:99999999.99',
+            'metodo_pago' => 'required|in:Efectivo,Transferencia,Cheque,Tarjeta',
+            'observaciones' => 'nullable',
+            'nro_factura' => ['required', 'regex:/^[AB]-\d{5}$/', Rule::exists('facturas', 'nro_factura')],
+            
+          ]);
+
+        $factura = Factura::where('nro_factura', $request->nro_factura)->first();
+
+        if ($request->monto > $factura->importe) {
+            return back()
+                ->withErrors(['monto' => 'El monto ingresado no puede ser mayor al total de la factura ($' . number_format($factura->importe, 2) . ').']
+                )->withInput();
+        }   
+          
+       
+        $ahora = Carbon::now();
+
+        $pago = new Pago();
+        $pago->monto = $request->monto;
+        $pago->fecha_pago = $ahora->toDateTimeString();
+        $pago->metodo_pago = $request->metodo_pago;
+        $pago->observaciones = $request->observaciones;
+        $pago->factura_id = $factura->id;
+        $pago->save();
+
+        return redirect()->route('pagos.index')->with('success', 'Se ha ingresado el pago.');
     }
 
     /**
@@ -43,7 +87,9 @@ class PagoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $pago = Pago::findOrFail($id);
+
+        return view('pagos.editar', compact('pago'));
     }
 
     /**

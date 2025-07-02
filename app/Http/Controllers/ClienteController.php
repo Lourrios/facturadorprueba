@@ -47,11 +47,11 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
        $this->validate($request, [
-            'cuil' => 'required|numeric|digits_between:10,11|unique:clientes,cuil',
+            'cuit' => 'required|numeric|digits_between:10,11|unique:clientes,cuit',
             'razon_social' => 'required|string|max:255',
             'direccion' => 'required|string|max:255',
             'telefono' => 'nullable|string|max:20',
-            'condicion_iva' => 'required|in:Responsable Inscripto,Monotributista,Exento,Consumidor Final',
+            'condicion_iva' => 'required|in:Responsable Inscripto,Monotributo,Exento,Consumidor Final',
             'email' => 'required|email|unique:clientes,email'
         ]);
     

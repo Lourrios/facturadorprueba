@@ -369,8 +369,8 @@ return [
         ],
          ['header' => 'Panel de Pagos'],
          [
-            'text' => 'Pagos',
-            'url' => 'admin/settings',
+            'text' => 'Ingresar Pago',
+            'url' => 'pagos/create',
             'icon' => 'fas fa-fw fa-user',
         ],
        /* [

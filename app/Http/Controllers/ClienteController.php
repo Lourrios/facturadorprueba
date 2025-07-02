@@ -2,28 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cliente;
+
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\Cliente;
 
 class ClienteController extends Controller
 {
-    function __construct()
+
+    public function __construct()
     {
-         $this->middleware('permission:ver-clientes|crear-clientes|editar-clientes|borrar-clientes', ['only' => ['index']]);
-         $this->middleware('permission:crear-clientes', ['only' => ['create','store']]);
-         $this->middleware('permission:editar-clientes', ['only' => ['edit','update']]);
-         $this->middleware('permission:borrar-clientes', ['only' => ['destroy']]);
+        $this->middleware('permission:ver-clientes', ['only' => ['index']]);
+        $this->middleware('permission:crear-clientes', ['only' => ['create','store']]);
+        $this->middleware('permission:editar-clientes', ['only' => ['edit','update']]);
+        $this->middleware('permission:borrar-clientes', ['only' => ['destroy']]);
     }
+    /**
+     * Display a listing of the resource.
+     */
     public function index(Request $request)
     {
-        $clientes = Cliente::buscar($request->input('buscar'))
-                    ->where('activo', true)
-                    ->paginate(5);
+        $busqueda = $request->input('busqueda');
 
-        return view('clientes.index', compact('clientes'));
+        $clientes= Cliente::when($busqueda, function($query, $busqueda){
+            return $query->where('razon_social','like',"%$busqueda%")
+            ->orwhere('cuit','like', "%$busqueda%");
+
+        })->paginate(5);
+        
+        return view('clientes.index', compact('clientes','busqueda'));
+
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -42,14 +50,15 @@ class ClienteController extends Controller
             'cuil' => 'required|numeric|digits_between:10,11|unique:clientes,cuil',
             'razon_social' => 'required|string|max:255',
             'direccion' => 'required|string|max:255',
-            'telefono' => 'required|string|max:20',
+            'telefono' => 'nullable|string|max:20',
             'condicion_iva' => 'required|in:Responsable Inscripto,Monotributista,Exento,Consumidor Final',
             'email' => 'required|email|unique:clientes,email'
         ]);
     
         Cliente::create($request->all());
     
-        return redirect()->route('clientes.index');
+       return redirect()->route('clientes.index')->with('success', 'Cliente creado correctamente');
+
     }
 
     /**
@@ -65,8 +74,10 @@ class ClienteController extends Controller
      */
     public function edit(string $id)
     {
-        $cliente = Cliente::find($id);
-        return view('clientes.editar',compact('cliente'));
+
+        $cliente = Cliente::findOrFail($id);
+
+          return view('clientes.editar', compact('cliente'));
 
 
     }
@@ -76,6 +87,8 @@ class ClienteController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
+        $cliente = Cliente::findOrFail($id);
         $this->validate($request, [
             'cuil' => 'required|numeric|digits_between:10,11|unique:clientes,cuil,' . $id,
             'razon_social' => 'required|string|max:255',
@@ -88,10 +101,11 @@ class ClienteController extends Controller
 
         ]);
 
-        $cliente = Cliente::findOrFail($id);
+       
         $cliente->update($request->all());
 
-        return redirect()->route('clientes.index');
+        return redirect()->route('clientes.index')->with('success', 'Cliente actualizado correctamente.');
+
     }
 
     /**
@@ -99,10 +113,11 @@ class ClienteController extends Controller
      */
     public function destroy(string $id)
     {
-        $cliente = Cliente::find($id);
-        $cliente->activo = false;
-        $cliente->save();
 
-        return redirect()->route('clientes.index');
+         $cliente = Cliente::findOrFail($id);
+        $cliente->delete(); // Soft delete
+        return redirect()->route('clientes.index')->with('success', 'Cliente eliminado.');
+
+
     }
 }

@@ -350,8 +350,15 @@ return [
         ],
          ['header' => 'Panel de clientes'],
          [
-            'text' => 'Clientes',
+
+            'text' => 'Listado Clientes',
             'url' => 'clientes',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+         [
+            'text' => 'Alta Clientes',
+            'url' => 'clientes/create',
+
             'icon' => 'fas fa-fw fa-user',
         ],
          ['header' => 'Panel de Facturas'],

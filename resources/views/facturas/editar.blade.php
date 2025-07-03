@@ -24,23 +24,14 @@
 
     <div class="form-row">
         <div class="form-group col-md-6">
-            <label>Mes</label>
-            <input type="text" name="periodo_mes" class="form-control" value="{{ $factura->periodo_mes }}" required>
-        </div>
-        <div class="form-group col-md-6">
-            <label>Año</label>
-            <input type="text" name="periodo_anio" class="form-control" value="{{ $factura->periodo_anio }}" required>
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group col-md-6">
             <label>Desde</label>
-            <input type="date" name="fecha_desde" class="form-control" value="{{ $factura->fecha_desde }}" required>
+            <input type="date" name="fecha_desde" class="form-control"
+                value="{{ old('fecha_desde', \Carbon\Carbon::parse($factura->fecha_desde)->format('Y-m-d')) }}">
         </div>
         <div class="form-group col-md-6">
             <label>Hasta</label>
-            <input type="date" name="fecha_hasta" class="form-control" value="{{ $factura->fecha_hasta }}" required>
+            <input type="date" name="fecha_hasta" class="form-control"
+                value="{{ old('fecha_hasta', \Carbon\Carbon::parse($factura->fecha_hasta)->format('Y-m-d')) }}">
         </div>
     </div>
 
@@ -56,10 +47,11 @@
 
     <div class="form-group">
         <label>Fecha de Emisión</label>
-        <input type="date" name="fecha_emision" class="form-control" value="{{ $factura->fecha_emision }}" required>
+        <input type="date" name="fecha_emision" class="form-control"
+            value="{{ old('fecha_emision', \Carbon\Carbon::parse($factura->fecha_emision)->format('Y-m-d')) }}">
     </div>
 
-    <div class="form-group">
+    <div class="form-group">        
         <label>Condición de Pago</label>
         <select name="condicion_pago" class="form-control" required>
             <option value="">-- Seleccionar --</option>

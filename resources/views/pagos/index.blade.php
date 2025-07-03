@@ -10,8 +10,8 @@
 @section('content')
 
     @can('crear-pagos')
+        <a class="btn btn-success mb-3" href="{{ route('pagos.create') }}">Nuevo Pago</a>
     @endcan
-    <a class="btn btn-success mb-3" href="{{ route('pagos.create') }}">Nuevo Pago</a>
 
     <form method="GET" action="{{ route('pagos.index') }}" class="mb-3">
         <input type="text" name="busqueda" value="{{ $busqueda }}" placeholder="Buscar..." class="form-control w-25 d-inline-block">
@@ -36,7 +36,7 @@
         <tbody>
         @foreach($pagos as $pago)
             <tr>
-                <td>{{ $pago->factura->nro_factura }}</td>
+                <td>{{ $pago->factura->numero_factura }}</td>
                 <td>{{ $pago->fecha_pago }}</td>
                 <td>{{ $pago->metodo_pago }}</td>
                 <td>${{ $pago->monto }}</td>

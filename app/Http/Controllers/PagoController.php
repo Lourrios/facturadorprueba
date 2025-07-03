@@ -10,9 +10,14 @@ use Carbon\Carbon;
 
 class PagoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct() {
+        
+        $this->middleware('permission:ver-pagos', ['only' => ['index']]);
+        $this->middleware('permission:crear-pagos', ['only' => ['create','store']]);
+        $this->middleware('permission:editar-pagos', ['only' => ['edit','update']]);
+        $this->middleware('permission:borrar-pagos', ['only' => ['destroy']]);
+    }
+
     public function index(Request $request)
     {
         $busqueda = $request->input('busqueda');
@@ -22,7 +27,7 @@ class PagoController extends Controller
             return $query->where('fecha_pago', 'like', "%$busqueda%")
                         ->orWhere('metodo_pago', 'like', "$busqueda")
                         ->orWhereHas('factura', function ($q) use ($busqueda) {
-                            $q->where('nro_factura', 'like', "$busqueda");  
+                            $q->where('numero_factura', 'like', "$busqueda");  
                         });
         })->orderBy('id', 'desc')
         ->paginate(5);
@@ -48,15 +53,15 @@ class PagoController extends Controller
             'monto' => 'required|numeric|min:0|max:99999999.99',
             'metodo_pago' => 'required|in:Efectivo,Transferencia,Cheque,Tarjeta',
             'observaciones' => 'nullable',
-            'nro_factura' => ['required', 'regex:/^[AB]-\d{5}$/', Rule::exists('facturas', 'nro_factura')],
+            'numero_factura' => ['required', 'regex:/^[AB]\d{6}$/', Rule::exists('facturas', 'numero_factura')],
             
           ]);
 
-        $factura = Factura::where('nro_factura', $request->nro_factura)->first();
+        $factura = Factura::where('numero_factura', $request->numero_factura)->first();
 
-        if ($request->monto > $factura->importe) {
+        if ($request->monto > $factura->importe_total) {
             return back()
-                ->withErrors(['monto' => 'El monto ingresado no puede ser mayor al total de la factura ($' . number_format($factura->importe, 2) . ').']
+                ->withErrors(['monto' => 'El monto ingresado no puede ser mayor al total de la factura ($' . number_format($factura->importe_total, 2) . ').']
                 )->withInput();
         }   
           

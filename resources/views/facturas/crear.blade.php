@@ -26,18 +26,6 @@
                     </select>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label>Mes</label>
-                        <input type="text" name="periodo_mes" class="form-control" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label>Año</label>
-                        <input type="text" name="periodo_anio" class="form-control" required>
-                    </div>
-                </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label>Desde</label>
@@ -57,11 +45,6 @@
             <div class="form-group">
                 <label>Importe Total</label>
                 <input type="number" name="importe_total" step="0.01" class="form-control" required>
-            </div>
-
-            <div class="form-group">
-                <label>Fecha de Emisión</label>
-                <input type="date" name="fecha_emision" class="form-control" required>
             </div>
 
             <div class="form-group">

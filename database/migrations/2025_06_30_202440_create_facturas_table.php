@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('facturas', function (Blueprint $table) {
             $table->id();
-            $table->string('nro_factura')->unique();
-            $table->text('concepto');
-            $table->decimal('importe', total:10, places:2);
+            $table->string('numero_factura')->unique();
+            $table->decimal('importe_total', total:10, places:2);
             $table->datetime('fecha_emision');
-            $table->datetime('periodo_desde');
-            $table->datetime('periodo_hasta');
+            $table->datetime('fecha_desde');
+            $table->datetime('fecha_hasta');
             $table->string('condicion_pago');
+            $table->text('detalle');
             $table->boolean('activo')->default(true);
             $table->unsignedInteger('cliente_id');
             $table->timestamps();

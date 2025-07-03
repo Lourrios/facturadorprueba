@@ -15,12 +15,14 @@ class FacturaGenerada extends Mailable
     use Queueable, SerializesModels;
 
     public $factura;
+    public $pdfData;
     /**
      * Create a new message instance.
      */
-    public function __construct(Factura $factura)
+    public function __construct(Factura $factura, $pdfData)
     {
         $this->factura=$factura;
+        $this->pdfData = $pdfData;
         
     }
 
@@ -45,16 +47,17 @@ class FacturaGenerada extends Mailable
         );
     }
 
-    public function build(){
-        return $this->subject('Factura Generada')
-        ->markdown('emails.factura')
-        ->attach(storage_path("app/public/factura_{$this->factura->id}.pdf"), // 
-                        [
-                            'as' => "Factura_{$this->factura->numero_factura}.pdf",
-                            'mime' => 'application/pdf',
-                        ]
-                    );
-                }
+
+    public function build()
+    {
+       return $this->subject('Factura ' . $this->factura->numero_factura)
+            ->markdown('emails.factura')
+            ->attachData(
+                $this->pdfData,
+                'Factura_' . $this->factura->numero_factura . '.pdf',
+                ['mime' => 'application/pdf']
+            );
+    }
     /**
      * Get the attachments for the message.
      *

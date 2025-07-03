@@ -40,11 +40,10 @@ Route::group(['middleware'=>['auth']],function(){
     Route::resource('roles', RolController::class);
     Route::resource('usuarios', UsuarioController::class);
     Route::resource('clientes', ClienteController::class);
-
-
     Route::resource('facturas', FacturaController::class);
+    Route::get('/facturas/{id}/pdf', [FacturaController::class, 'generar_pdf'])->name('facturas.generar_pdf');
     Route::resource('pagos', PagoController::class);
-   // Route::resource('roles', RolController::class);
+
 
 });
 

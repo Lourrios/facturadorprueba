@@ -31,10 +31,10 @@
             <td>{{ $factura->numero_factura }}</td>
             <td>{{ $factura->cliente->razon_social }}</td>
             <td>${{ number_format($factura->importe_total, 2, ',', '.') }}</td>
-            <td>{{ $factura->periodo_mes }}/{{ $factura->periodo_anio }}</td>
+            <td>{{ $factura->fecha_desde }} - {{ $factura->fecha_hasta }}</td>
             <td>
                 <a href="{{ route('facturas.edit', $factura->id) }}" class="btn btn-info btn-sm">Editar</a>
-                <a href="{{ asset('storage/facura_' . $factura->id . '.pdf') }}" target="_blank" class="btn btn-secondary btn-sm">PDF</a>
+                <a href="{{ asset('storage/factura_' . $factura->id . '.pdf') }}" target="_blank" class="btn btn-secondary btn-sm">PDF</a>
                 <form action="{{ route('facturas.destroy', $factura->id) }}" method="POST" style="display:inline">
                     @csrf
                     @method('DELETE')

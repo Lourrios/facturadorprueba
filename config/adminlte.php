@@ -363,8 +363,8 @@ return [
         ],
          ['header' => 'Panel de Facturas'],
          [
-            'text' => 'Facturas',
-            'url' => 'admin/settings',
+            'text' => 'Alta factura',
+            'url' => 'facturas/create',
             'icon' => 'fas fa-fw fa-user',
         ],
          ['header' => 'Panel de Pagos'],

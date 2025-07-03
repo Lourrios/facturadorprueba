@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('facturas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');
-            $table->string('numero_factura')->unique(); //autogenerado
-            $table->string('periodo_mes');
-            $table->string('periodo_anio');
-            $table->date('fecha_desde');
-            $table->date('fecha_hasta');
-            $table->text('detalle');
-            $table->decimal('importe_total',10,2);
-            $table->date('fecha_emision');
+            $table->string('numero_factura')->unique();
+            $table->decimal('importe_total', total:10, places:2);
+            $table->datetime('fecha_emision');
+            $table->datetime('fecha_desde');
+            $table->datetime('fecha_hasta');
             $table->string('condicion_pago');
+            $table->text('detalle');
+            $table->boolean('activo')->default(true);
+            $table->unsignedInteger('cliente_id');
             $table->timestamps();
         });
     }

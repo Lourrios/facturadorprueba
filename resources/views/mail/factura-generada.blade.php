@@ -1,14 +1,17 @@
+
+
 @component('mail::message')
-# ¡Hola!
+# ¡Hola, {{ $factura->cliente->razon_social }}!
 
-Se generó una nueva factura para **{{ $factura->cliente->razon_social }}**.
+Se genero una nueva factura!
 
-- **Número:** {{ $factura->numero_factura }}
-- **Importe:** ${{ number_format($factura->importe_total, 2, ',', '.') }}
-- **Periodo:** {{ $factura->periodo_mes }}/{{ $factura->periodo_anio }}
+- Total: ${{ number_format($factura->importe_total, 2) }}
+- Fecha Emision: {{ $factura->fecha_emision }}
+- Periodo: Desde: {{ $factura->fecha_desde }}  /  Hasta:{{ $factura->fecha_hasta }}
 
-Adjuntamos el PDF correspondiente.
+Factura {{ $factura->numero_factura }} adjunta en pdf!
 
-Gracias,<br>
+Saludos,  
 {{ config('app.name') }}
 @endcomponent
+

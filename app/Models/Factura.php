@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Factura extends Model
 {
@@ -18,9 +20,16 @@ class Factura extends Model
         'fecha_emision',
         'condicion_pago',
     ];
+  
+    public function pagos(): HasMany
+    {
+        return $this->hasMany(Pago::class);
+    }
 
-    public function cliente(){
+    public function cliente()
+    {
         return $this->belongsTo(Cliente::class);
         
     }
+
 }

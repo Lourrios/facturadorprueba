@@ -8,6 +8,7 @@ use App\Models\Cliente;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\FacturaGenerada;
+use Carbon\Carbon;
 
 class FacturaController extends Controller
 {
@@ -19,13 +20,16 @@ class FacturaController extends Controller
         $this->middleware('permission:borrar-facturas', ['only' => ['destroy']]);
     }
 
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+
        $facturas= Factura::with('cliente')->paginate(5);
        return view('facturas.index', compact('facturas'));
+
     }
 
     /**
@@ -33,8 +37,10 @@ class FacturaController extends Controller
      */
     public function create()
     {
+
          $clientes= Cliente::all();
         return view('facturas.crear', compact('clientes'));
+
     }
 
     /**
@@ -42,15 +48,13 @@ class FacturaController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
              'cliente_id' => 'required|exists:clientes,id',
-             'periodo_mes' => 'required',
-             'periodo_anio' => 'required',
              'fecha_desde' => 'required|date',
              'fecha_hasta' => 'required|date|after_or_equal:fecha_desde',
              'detalle' => 'required',
              'importe_total'=> 'required|numeric|min:0',
-             'fecha_emision' => 'required|date',
              'condicion_pago' => 'required',
 
 
@@ -69,24 +73,34 @@ class FacturaController extends Controller
                 break;
         }
 
-        //Busca ultima factura de ese tipo
-        $ultimo = Factura::where('numero_factura','like','$prefijo%')
-        ->orderBy('id', 'desc')->first();
+        // Busca última factura del tipo (A o C)
+        $ultimo = Factura::where('numero_factura', 'like', $prefijo . '%')
+            ->orderBy('id', 'desc')
+            ->first();
 
-         $ultimoNumero =$ultimo ? intval(substr($ultimo->numero_factura,1)) : 0;
-         $nuevoNumero = $ultimoNumero + 1;       
-         $numero = $prefijo . str_pad($nuevoNumero,6,'0', STR_PAD_LEFT);
-        
+        $ultimoNumero = $ultimo ? intval(substr($ultimo->numero_factura, 1)) : 0;
+        $nuevoNumero = $ultimoNumero + 1;
+
+        $numero = $prefijo . str_pad($nuevoNumero, 6, '0', STR_PAD_LEFT);
+
+        $ahora = Carbon::now();
+
         $factura = Factura::create([
             ...$request->all(),
-            'numero_factura'=> $numero,  
+            'numero_factura' => $numero,
+            'fecha_emision' => $ahora->toDateTimeString(),
         ]);
+
 
         $pdf = Pdf::loadView('facturas.pdf', compact('factura'));
         $pdf->save(storage_path("app/public/factura_{$factura->id }.pdf"));
 
-        Mail::to($factura->cliente->email)->send(new FacturaGenerada($factura));
+        $pdfData = $pdf->output();
+
+        Mail::to($factura->cliente->email)->send(new FacturaGenerada($factura, $pdfData));
+
         return redirect()->route('facturas.index')->with('success','Factura creada correctamente.');
+
 
     }
 
@@ -97,6 +111,7 @@ class FacturaController extends Controller
     {
         $factura = Factura::with('cliente')->findOrFail($id);
         return view ('facturas.show', compact('factura'));
+
     }
 
     /**
@@ -107,6 +122,7 @@ class FacturaController extends Controller
         $factura =Factura::findOrFail($id);
         $clientes = Cliente::all();
         return view('facturas.editar', compact('factura', 'clientes'));
+
     }
 
     /**
@@ -114,10 +130,8 @@ class FacturaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-         $request->validate([
-             'cliente_id' => 'required|exists:clientes,id',
-             'periodo_mes' => 'required',
-             'periodo_anio' => 'required',
+        $request->validate([
+             'cliente_id' => 'required|exists:clientes,id', 
              'fecha_desde' => 'required|date',
              'fecha_hasta' => 'required|date|after_or_equal:fecha_desde',
              'detalle' => 'required',

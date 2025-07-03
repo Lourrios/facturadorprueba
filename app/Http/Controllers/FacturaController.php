@@ -19,13 +19,16 @@ class FacturaController extends Controller
         $this->middleware('permission:borrar-facturas', ['only' => ['destroy']]);
     }
 
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+
        $facturas= Factura::with('cliente')->paginate(5);
        return view('facturas.index', compact('facturas'));
+
     }
 
     /**
@@ -33,8 +36,10 @@ class FacturaController extends Controller
      */
     public function create()
     {
+
          $clientes= Cliente::all();
         return view('facturas.crear', compact('clientes'));
+
     }
 
     /**
@@ -42,6 +47,7 @@ class FacturaController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
              'cliente_id' => 'required|exists:clientes,id',
              'periodo_mes' => 'required',
@@ -88,6 +94,7 @@ class FacturaController extends Controller
         Mail::to($factura->cliente->email)->send(new FacturaGenerada($factura));
         return redirect()->route('facturas.index')->with('success','Factura creada correctamente.');
 
+
     }
 
     /**
@@ -97,6 +104,7 @@ class FacturaController extends Controller
     {
         $factura = Factura::with('cliente')->findOrFail($id);
         return view ('facturas.show', compact('factura'));
+
     }
 
     /**
@@ -107,13 +115,14 @@ class FacturaController extends Controller
         $factura =Factura::findOrFail($id);
         $clientes = Cliente::all();
         return view('facturas.editar', compact('factura', 'clientes'));
+
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
+
          $request->validate([
              'cliente_id' => 'required|exists:clientes,id',
              'periodo_mes' => 'required',

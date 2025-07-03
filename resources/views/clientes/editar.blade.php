@@ -1,12 +1,15 @@
 @extends('adminlte::page')
 
+
 @section('title', 'Editar Cliente')
+
 
 @section('content_header')
     <h1>Editar Cliente</h1>
 @stop
 
 @section('content')
+
 
 @if ($errors->any())
     <div class="alert alert-danger">
@@ -63,6 +66,7 @@
 </form>
 
 @stop
+
 @section('css')
     {{-- Add here extra stylesheets --}}
     {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}

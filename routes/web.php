@@ -9,6 +9,8 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ClienteController;
 use App\Models\Cliente;
 use App\Http\Controllers\FacturaController;
+use App\Http\Controllers\PagoController;
+
 
 Route::get('/', function () {
     return view('auth.login');
@@ -38,6 +40,11 @@ Route::group(['middleware'=>['auth']],function(){
     Route::resource('roles', RolController::class);
     Route::resource('usuarios', UsuarioController::class);
     Route::resource('clientes', ClienteController::class);
+
+
     Route::resource('facturas', FacturaController::class);
+    Route::resource('pagos', PagoController::class);
+   // Route::resource('roles', RolController::class);
 
 });
+

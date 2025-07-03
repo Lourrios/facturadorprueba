@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use App\Models\Cliente;
 
@@ -45,17 +46,18 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'cuit' => 'required|unique:clientes',
-            'razon_social' => 'required',
-            'direccion' => 'required',
-            'email' => 'required|email',
-            'telefono' => 'nullable',
-            'condicion_iva' => 'required',
+       $this->validate($request, [
+            'cuit' => 'required|numeric|digits_between:10,11|unique:clientes,cuit',
+            'razon_social' => 'required|string|max:255',
+            'direccion' => 'required|string|max:255',
+            'telefono' => 'nullable|string|max:20',
+            'condicion_iva' => 'required|in:Responsable Inscripto,Monotributo,Exento,Consumidor Final',
+            'email' => 'required|email|unique:clientes,email'
         ]);
-        
+    
         Cliente::create($request->all());
-        return redirect()->route('clientes.index')->with('success', 'Cliente creado correctamente');
+    
+       return redirect()->route('clientes.index')->with('success', 'Cliente creado correctamente');
 
     }
 
@@ -72,9 +74,11 @@ class ClienteController extends Controller
      */
     public function edit(string $id)
     {
+
         $cliente = Cliente::findOrFail($id);
 
           return view('clientes.editar', compact('cliente'));
+
 
     }
 
@@ -83,17 +87,21 @@ class ClienteController extends Controller
      */
     public function update(Request $request, string $id)
     {
-         $cliente = Cliente::findOrFail($id);
 
-        $request->validate([
-            'cuit' => 'required|unique:clientes,cuit,'.$id,
-            'razon_social' => 'required',
-            'direccion' => 'required',
-            'email' => 'required|email',
-            'telefono' => 'nullable',
-            'condicion_iva' => 'required',
+        $cliente = Cliente::findOrFail($id);
+        $this->validate($request, [
+            'cuil' => 'required|numeric|digits_between:10,11|unique:clientes,cuil,' . $id,
+            'razon_social' => 'required|string|max:255',
+            'direccion' => 'required|string|max:255',
+            'telefono' => 'required|string|max:20',
+            'condicion_iva' => 'required|in:Responsable Inscripto,Monotributista,Exento,Consumidor Final',
+            'email' => 'required|email|unique:clientes,email,' . $id
+
+            //Ejemplo: SELECT * FROM clientes WHERE email = 'correo@ejemplo.com' AND id != $id
+
         ]);
 
+       
         $cliente->update($request->all());
 
         return redirect()->route('clientes.index')->with('success', 'Cliente actualizado correctamente.');
@@ -105,9 +113,11 @@ class ClienteController extends Controller
      */
     public function destroy(string $id)
     {
+
          $cliente = Cliente::findOrFail($id);
         $cliente->delete(); // Soft delete
         return redirect()->route('clientes.index')->with('success', 'Cliente eliminado.');
+
 
     }
 }

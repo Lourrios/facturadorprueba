@@ -1,5 +1,6 @@
 @extends('adminlte::page')
 
+
 @section('title', 'Nuevo Cliente')
 
 @section('content_header')
@@ -63,6 +64,7 @@
 </form>
 
 @stop
+
 @section('css')
     {{-- Add here extra stylesheets --}}
     {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}

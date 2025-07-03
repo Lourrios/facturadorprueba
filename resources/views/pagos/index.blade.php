@@ -1,19 +1,19 @@
 @extends('adminlte::page')
 
-@section('title', 'Clientes')
+@section('title', 'pagos')
 
 @section('content_header')
 
-    <h1>Listado de Clientes</h1>
+    <h1>Listado de Pagos</h1>
 @stop
 
 @section('content')
 
-    @can('crear-clientes')
-        <a class="btn btn-success mb-3" href="{{ route('clientes.create') }}">Nuevo Cliente</a>
+    @can('crear-pagos')
     @endcan
+    <a class="btn btn-success mb-3" href="{{ route('pagos.create') }}">Nuevo Pago</a>
 
-    <form method="GET" action="{{ route('clientes.index') }}" class="mb-3">
+    <form method="GET" action="{{ route('pagos.index') }}" class="mb-3">
         <input type="text" name="busqueda" value="{{ $busqueda }}" placeholder="Buscar..." class="form-control w-25 d-inline-block">
         <button type="submit" class="btn btn-primary">Buscar</button>
     </form>
@@ -25,28 +25,31 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>CUIT</th>
-                <th>Razón Social</th>
-                <th>Email</th>
-                <th>Teléfono</th>
-                <th>IVA</th>
+                <th>Factura</th>
+                <th>Fecha de pago</th>
+                <th>Metodo de pago</th>
+                <th>Monto</th>
+                <th>Observaciones</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-        @foreach($clientes as $cliente)
+        @foreach($pagos as $pago)
             <tr>
-                <td>{{ $cliente->cuit }}</td>
-                <td>{{ $cliente->razon_social }}</td>
-                <td>{{ $cliente->email }}</td>
-                <td>{{ $cliente->telefono }}</td>
-                <td>{{ $cliente->condicion_iva }}</td>
+                <td>{{ $pago->factura->nro_factura }}</td>
+                <td>{{ $pago->fecha_pago }}</td>
+                <td>{{ $pago->metodo_pago }}</td>
+                <td>${{ $pago->monto }}</td>
+                <td title="{{ $pago->observaciones }}">
+                    {{ \Illuminate\Support\Str::limit($pago->observaciones, 30, '...') ?? 'No hay observaciones' }}
+                </td>
+
                 <td>
-                    @can('editar-clientes')
-                        <a class="btn btn-info btn-sm" href="{{ route('clientes.edit', $cliente->id) }}">Editar</a>
+                    @can('editar-pagos')
+                        <a class="btn btn-info btn-sm" href="{{ route('pagos.edit', $pago->id) }}">Editar</a>
                     @endcan
-                    @can('borrar-clientes')
-                        <form action="{{ route('clientes.destroy', $cliente->id) }}" method="POST" style="display:inline">
+                    @can('borrar-pagos')
+                        <form action="{{ route('pagos.destroy', $pago->id) }}" method="POST" style="display:inline">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar?')">Eliminar</button>
                         </form>
@@ -58,7 +61,7 @@
     </table>
 
     <div class="pagination justify-content-end">
-        {{ $clientes->links() }}
+        {{ $pagos->links() }}
     </div>
 @stop
 @section('css')

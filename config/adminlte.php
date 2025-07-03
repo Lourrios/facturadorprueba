@@ -336,7 +336,7 @@ return [
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => 'Roles por usuario',
+            'text' => 'Asignar roles',
             'url' => 'usuarios',
             'icon' => 'fas fa-fw fa-user',
             'can'  => 'ver-usuarios',
@@ -350,6 +350,7 @@ return [
         ],
          ['header' => 'Panel de clientes'],
          [
+
             'text' => 'Listado Clientes',
             'url' => 'clientes',
             'icon' => 'fas fa-fw fa-user',
@@ -357,6 +358,7 @@ return [
          [
             'text' => 'Alta Clientes',
             'url' => 'clientes/create',
+
             'icon' => 'fas fa-fw fa-user',
         ],
          ['header' => 'Panel de Facturas'],
@@ -367,8 +369,8 @@ return [
         ],
          ['header' => 'Panel de Pagos'],
          [
-            'text' => 'Pagos',
-            'url' => 'admin/settings',
+            'text' => 'Ingresar Pago',
+            'url' => 'pagos/create',
             'icon' => 'fas fa-fw fa-user',
         ],
        /* [
@@ -537,6 +539,18 @@ return [
                 ],
             ],
         ],
+
+        'Livewire' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js', // Requerido si usás Alpine (Livewire v3)
+                ],
+            ],
+        ],
+
     ],
 
     /*

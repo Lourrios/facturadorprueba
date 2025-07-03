@@ -3,15 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Factura;
+use App\Models\Cliente;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\FacturaGenerada;
 
 class FacturaController extends Controller
 {
+      public function __construct()
+    {
+        $this->middleware('permission:ver-facturas', ['only' => ['index']]);
+        $this->middleware('permission:crear-facturas', ['only' => ['create','store']]);
+        $this->middleware('permission:editar-facturas', ['only' => ['edit','update']]);
+        $this->middleware('permission:borrar-facturas', ['only' => ['destroy']]);
+    }
+
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+
+       $facturas= Factura::with('cliente')->paginate(5);
+       return view('facturas.index', compact('facturas'));
+
     }
 
     /**
@@ -19,7 +36,10 @@ class FacturaController extends Controller
      */
     public function create()
     {
-        //
+
+         $clientes= Cliente::all();
+        return view('facturas.crear', compact('clientes'));
+
     }
 
     /**
@@ -27,7 +47,54 @@ class FacturaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+             'cliente_id' => 'required|exists:clientes,id',
+             'periodo_mes' => 'required',
+             'periodo_anio' => 'required',
+             'fecha_desde' => 'required|date',
+             'fecha_hasta' => 'required|date|after_or_equal:fecha_desde',
+             'detalle' => 'required',
+             'importe_total'=> 'required|numeric|min:0',
+             'fecha_emision' => 'required|date',
+             'condicion_pago' => 'required',
+
+
+        ]);
+        //GENERACION AUTOMATICA DE NUMERO DE FACTURA
+        $cliente = Cliente::findOrFail($request->cliente_id);
+        $condicionIva =$cliente->condicion_iva;
+
+        switch($condicionIva){
+            case 'Responsable Inscripto': $prefijo= 'A';
+            break;
+            case 'Monotributo':
+            case 'Exento':
+            case 'Consumidor Final' :
+                default: $prefijo = 'C';
+                break;
+        }
+
+        //Busca ultima factura de ese tipo
+        $ultimo = Factura::where('numero_factura','like','$prefijo%')
+        ->orderBy('id', 'desc')->first();
+
+         $ultimoNumero =$ultimo ? intval(substr($ultimo->numero_factura,1)) : 0;
+         $nuevoNumero = $ultimoNumero + 1;       
+         $numero = $prefijo . str_pad($nuevoNumero,6,'0', STR_PAD_LEFT);
+        
+        $factura = Factura::create([
+            ...$request->all(),
+            'numero_factura'=> $numero,  
+        ]);
+
+        $pdf = Pdf::loadView('facturas.pdf', compact('factura'));
+        $pdf->save(storage_path("app/public/factura_{$factura->id }.pdf"));
+
+        Mail::to($factura->cliente->email)->send(new FacturaGenerada($factura));
+        return redirect()->route('facturas.index')->with('success','Factura creada correctamente.');
+
+
     }
 
     /**
@@ -35,7 +102,9 @@ class FacturaController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $factura = Factura::with('cliente')->findOrFail($id);
+        return view ('facturas.show', compact('factura'));
+
     }
 
     /**
@@ -43,15 +112,36 @@ class FacturaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $factura =Factura::findOrFail($id);
+        $clientes = Cliente::all();
+        return view('facturas.editar', compact('factura', 'clientes'));
+
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        //
+
+         $request->validate([
+             'cliente_id' => 'required|exists:clientes,id',
+             'periodo_mes' => 'required',
+             'periodo_anio' => 'required',
+             'fecha_desde' => 'required|date',
+             'fecha_hasta' => 'required|date|after_or_equal:fecha_desde',
+             'detalle' => 'required',
+             'importe_total'=> 'required|numeric|min:0',
+             'fecha_emision' => 'required|date',
+             'condicion_pago' => 'required',
+
+
+        ]);
+
+        $factura = Factura::findOrFail($id);
+        $factura->update($request->all());
+
+        return redirect()->route('facturas.index')->with('success', 'Factura actualizada correctamente');
+
     }
 
     /**
@@ -59,6 +149,16 @@ class FacturaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $factura = Factura::findOrFail($id);
+        $factura->delete();
+        return redirect()->route('facturas.index')->with('success', 'Factura eliminada.');
+    }
+
+    //Descarga del archivo pdf
+    public function descargarPDF( $id){
+        $factura =Factura::with('cliente')->findOrFail($id);
+        $pdf = Pdf::loadView('facturas.pdf', compact('factura'));
+        return $pdf->download("factura_{$factura->id}.pdf");
+
     }
 }

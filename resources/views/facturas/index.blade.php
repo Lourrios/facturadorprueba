@@ -15,6 +15,22 @@
 
 <a href="{{ route('facturas.create') }}" class="btn btn-primary mb-3">Nueva Factura</a>
 
+<form method="GET" action="{{ route('facturas.index') }}" class="mb-3 d-flex flex-wrap gap-2 align-items-center">
+<input type="text" name="cliente" id="cliente-buscador" value="{{ request('cliente') }}" placeholder="Buscar Cliente..." class="form-control w-auto">
+    <select name="estado" class="form-control w-auto">
+        <option value="">-- Estado --</option>
+        <option value="Pagada" {{ request('estado') == 'Pagada' ? 'selected' : '' }}>Pagada</option>
+        <option value="Pendiente" {{ request('estado') == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
+         <option value="Parcialmente" {{ request('estado') == 'Parcialmente' ? 'selected' : '' }}>Parcialmente Pagada</option>
+    </select>
+    <input type="date" name="fecha" value="{{ request('fecha') }}" class="form-control w-auto">
+    <button type="submit" class="btn btn-secondary">Filtrar</button>
+
+    <a href="{{route('facturas.index')}}" class="btn btn-outline-danger">Limpiar filtros</a>
+
+</form>
+
+
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -22,16 +38,31 @@
             <th>Cliente</th>
             <th>Importe</th>
             <th>Periodo</th>
+             <th>Estado</th>
             <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
         @foreach($facturas as $factura)
-        <tr>
+         <tr>
             <td>{{ $factura->numero_factura }}</td>
             <td>{{ $factura->cliente->razon_social }}</td>
             <td>${{ number_format($factura->importe_total, 2, ',', '.') }}</td>
             <td>{{ $factura->fecha_desde }} - {{ $factura->fecha_hasta }}</td>
+           <td>
+                @php 
+                    $totalPagado = $factura->pagos->sum('monto');
+                @endphp
+
+                 @if($totalPagado == 0)
+                        <span class="badge badge-warning">Pendiente</span>
+                    @elseif($totalPagado >= $factura->importe_total)
+                        <span class="badge badge-success">Pagada</span>
+                    @else
+                        <span class="badge badge-info">Parcialmente pagada</span>
+                 @endif
+            </td>
+
             <td>
                 <a href="{{ route('facturas.edit', $factura->id) }}" class="btn btn-info btn-sm">Editar</a>
                 <a href="{{ asset('storage/factura_' . $factura->id . '.pdf') }}" target="_blank" class="btn btn-secondary btn-sm">PDF</a>
@@ -40,6 +71,7 @@
                     @method('DELETE')
                     <button class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar factura?')">Borrar</button>
                 </form>
+               
             </td>
         </tr>
         @endforeach

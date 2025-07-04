@@ -19,6 +19,17 @@
     color: #000;
  }
 
+.bg-c-red {
+    background: linear-gradient(45deg, #ff9a9e, #f6416c);
+    color: #fff;
+}
+
+.bg-c-brown {
+    background: linear-gradient(45deg, #d2b48c, #a0522d);
+    color: #fff;
+}
+
+
 .card {    
     -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
     box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
@@ -42,4 +53,33 @@
 
 .f-right {
     float: right;
+}
+/* === Personalización AdminLTE - Estilos adicionales === */
+
+/* Fondo general celeste claro */
+body {
+    background-color: #e0f7fa !important;
+}
+
+/* Fondo de la barra lateral */
+.main-sidebar {
+    background-color: #e0f7fa !important;
+}
+
+/* Menú: letras negras */
+.nav-sidebar .nav-link {
+    color: #000 !important;
+    background-color: transparent !important;
+}
+
+/* Menú activo: blanco y negrita */
+.nav-sidebar .nav-link.active {
+    background-color: #ffffff !important;
+    color: #000 !important;
+    font-weight: bold;
+}
+
+/* Quitar sombra de elementos innecesarios si querés algo más plano */
+.sidebar-light-info .nav-sidebar > .nav-item > .nav-link.active {
+    box-shadow: none !important;
 }

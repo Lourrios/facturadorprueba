@@ -24,12 +24,49 @@ class FacturaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
 
-       $facturas= Factura::with('cliente')->paginate(5);
-       return view('facturas.index', compact('facturas'));
+          $cliente = $request->input('cliente');
+        $estado = $request->input('estado');
+        $fecha = $request->input('fecha');
 
+    // Base query con relaciones y filtros directos
+    $query = Factura::with(['cliente', 'pagos'])
+        ->when($cliente, function ($q) use ($cliente) {
+            $q->whereHas('cliente', function ($subQuery) use ($cliente) {
+                $subQuery->where('razon_social', 'like', "%$cliente%");
+            });
+        })
+        ->when($fecha, function ($q) use ($fecha) {
+            $q->whereDate('fecha_emision', $fecha);
+        });
+
+    // Obtener paginadas (en bruto, sin filtro de estado aún)
+    $facturas = $query->paginate(5);
+
+    // Aplicar filtro por estado sobre la colección ya paginada
+    if ($estado) {
+        $facturas->setCollection(
+            $facturas->getCollection()->filter(function ($factura) use ($estado) {
+                $totalPagado = $factura->pagos->sum('monto');
+                $importe = $factura->importe_total;
+
+               switch ($estado) {
+                case 'Pagada':
+                    return $totalPagado >= $importe;
+                case 'Pendiente':
+                    return $totalPagado > 0 && $totalPagado < $importe;
+                case 'Cancelada':
+                    return $totalPagado == 0;
+                default:
+                    return true;
+            }
+            })->values()
+        );
+    }
+
+    return view('facturas.index', compact('facturas'));
     }
 
     /**

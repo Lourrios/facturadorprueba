@@ -36,7 +36,7 @@
         <tbody>
         @foreach($pagos as $pago)
             <tr>
-                <td>{{ $pago->factura->numero_factura }}</td>
+               <td> {{ $pago->factura ? $pago->factura->numero_factura : 'Factura no encontrada' }}</td>
                 <td>{{ $pago->fecha_pago }}</td>
                 <td>{{ $pago->metodo_pago }}</td>
                 <td>${{ $pago->monto }}</td>

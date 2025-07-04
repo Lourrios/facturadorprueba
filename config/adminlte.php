@@ -63,12 +63,17 @@ return [
     |
     */
 
-    'logo' => '<b>Vida Digital</b>',
+   // 'logo' => '<b>Vida Digital</b>',
     //'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
    // 'logo_img_class' => 'brand-image img-circle elevation-3',
     //'logo_img_xl' => null,
     //'logo_img_xl_class' => 'brand-image-xs',
     //'logo_img_alt' => 'Admin Logo',
+    'logo' => '<span style="color:#007bff; font-weight:bold;">Vida Digital</span>',
+    'logo_img' => null,
+    'logo_img_class' => '',
+    'logo_img_alt' => '',
+
 
     /*
     |--------------------------------------------------------------------------
@@ -285,7 +290,7 @@ return [
     */
 
     'laravel_asset_bundling' => false,
-    'laravel_css_path' => 'css/app.css',
+    'laravel_css_path' => 'public\css\admin_custom.css',
     'laravel_js_path' => 'js/app.js',
 
     /*
@@ -363,11 +368,21 @@ return [
         ],
          ['header' => 'Panel de Facturas'],
          [
+            'text' => 'Listado de factura',
+            'url' => 'facturas',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+         [
             'text' => 'Alta factura',
             'url' => 'facturas/create',
             'icon' => 'fas fa-fw fa-user',
         ],
          ['header' => 'Panel de Pagos'],
+         [
+            'text' => 'Pagos',
+            'url' => 'pagos',
+            'icon' => 'fas fa-fw fa-user',
+        ],
          [
             'text' => 'Ingresar Pago',
             'url' => 'pagos/create',

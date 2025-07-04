@@ -31,7 +31,6 @@ class FacturaController extends Controller
         $estado = $request->input('estado');
         $fecha = $request->input('fecha');
 
-    // Base query con relaciones y filtros directos
     $query = Factura::with(['cliente', 'pagos'])
         ->when($cliente, function ($q) use ($cliente) {
             $q->whereHas('cliente', function ($subQuery) use ($cliente) {
@@ -42,10 +41,10 @@ class FacturaController extends Controller
             $q->whereDate('fecha_emision', $fecha);
         });
 
-    // Obtener paginadas (en bruto, sin filtro de estado aún)
+    
     $facturas = $query->paginate(5);
 
-    // Aplicar filtro por estado sobre la colección ya paginada
+    
     if ($estado) {
         $facturas->setCollection(
             $facturas->getCollection()->filter(function ($factura) use ($estado) {
@@ -53,12 +52,12 @@ class FacturaController extends Controller
                 $importe = $factura->importe_total;
 
                switch ($estado) {
-                case 'Pagada':
+               case 'Pagada':
                     return $totalPagado >= $importe;
                 case 'Pendiente':
-                    return $totalPagado > 0 && $totalPagado < $importe;
-                case 'Cancelada':
                     return $totalPagado == 0;
+                case 'Parcialmente':
+                    return $totalPagado > 0 && $totalPagado < $importe;
                 default:
                     return true;
             }

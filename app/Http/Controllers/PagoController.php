@@ -53,7 +53,7 @@ class PagoController extends Controller
             'monto' => 'required|numeric|min:0|max:99999999.99',
             'metodo_pago' => 'required|in:Efectivo,Transferencia,Cheque,Tarjeta',
             'observaciones' => 'nullable',
-            'numero_factura' => ['required', 'regex:/^[AB]\d{6}$/', Rule::exists('facturas', 'numero_factura')],
+            'numero_factura' => ['required', 'regex:/^[ABC]\d{6}$/', Rule::exists('facturas', 'numero_factura')],
             
           ]);
 
@@ -94,7 +94,7 @@ class PagoController extends Controller
     {
         $pago = Pago::findOrFail($id);
 
-        return view('pagos.editar', compact('pago'));
+        return view('pagos.edit', compact('pago'));
     }
 
     /**
@@ -102,7 +102,20 @@ class PagoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $pago = Pago::findOrFail($id);
+        $request->validate([
+        'monto'=>'required|numeric|min:0|max:99999999.99',
+        'metodo_pago'=>'required|in:Efectivo,Transferencia,Cheque,Tarjeta',
+        'observaciones'=>'nullable',
+        ]);
+
+        $pago->update([
+            'monto'=>$request->monto,
+            'metodo_pago'=> $request->metodo_pago,
+            'observaciones'=> $request->observaciones,
+        ]);
+
+        return redirect() ->route('pagos.index')->with('success', 'Pago actualizado correctamente.');
     }
 
     /**
@@ -110,6 +123,10 @@ class PagoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $pago = Pago::findOrFail($id);
+        $pago->delete();
+
+        return redirect()->route('pagos.index')->with('success', 'Pago eliminado correctamente.');
+
     }
 }

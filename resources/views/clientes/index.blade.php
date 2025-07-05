@@ -30,6 +30,7 @@
                 <th>Email</th>
                 <th>Teléfono</th>
                 <th>IVA</th>
+                <th>Saldo</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -42,6 +43,15 @@
                 <td>{{ $cliente->telefono }}</td>
                 <td>{{ $cliente->condicion_iva }}</td>
                 <td>
+                    @if($cliente->tieneFacturasAdeudadas())
+                        <a href="{{ route('facturas.index', ['cliente' => $cliente->razon_social, 'estado' => 'Pendiente']) }}" class="badge bg-warning">
+                            Adeudado
+                        </a>
+                    @else
+                        <span class="badge bg-success">Pagado</span>
+                    @endif
+                </td>
+                <td>
                     @can('editar-clientes')
                         <a class="btn btn-info btn-sm" href="{{ route('clientes.edit', $cliente->id) }}">Editar</a>
                     @endcan
@@ -51,7 +61,11 @@
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar?')">Eliminar</button>
                         </form>
                     @endcan
+                    @if ($cliente->tieneFacturasAdeudadas())
+                     
+                    @endif
                 </td>
+                
             </tr>
         @endforeach
         </tbody>

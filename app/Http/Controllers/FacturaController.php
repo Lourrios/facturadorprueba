@@ -27,11 +27,13 @@ class FacturaController extends Controller
     public function index(Request $request)
     {
 
-          $cliente = $request->input('cliente');
+        $cliente = $request->input('cliente');
         $estado = $request->input('estado');
         $fecha = $request->input('fecha');
 
+
     $query = Factura::with(['cliente', 'pagos'])
+
         ->when($cliente, function ($q) use ($cliente) {
             $q->whereHas('cliente', function ($subQuery) use ($cliente) {
                 $subQuery->where('razon_social', 'like', "%$cliente%");
@@ -41,31 +43,55 @@ class FacturaController extends Controller
             $q->whereDate('fecha_emision', $fecha);
         });
 
-    
-    $facturas = $query->paginate(5);
 
-    
-    if ($estado) {
-        $facturas->setCollection(
-            $facturas->getCollection()->filter(function ($factura) use ($estado) {
-                $totalPagado = $factura->pagos->sum('monto');
-                $importe = $factura->importe_total;
+        // Obtener paginadas (en bruto, sin filtro de estado aún)
+        $facturas = $query->paginate(5)->appends($request->all());
 
-               switch ($estado) {
-               case 'Pagada':
-                    return $totalPagado >= $importe;
-                case 'Pendiente':
-                    return $totalPagado == 0;
-                case 'Parcialmente':
-                    return $totalPagado > 0 && $totalPagado < $importe;
-                default:
-                    return true;
+
+        // Aplicar filtro por estado sobre la colección ya paginada
+        
+        if ($estado) {
+            $facturas->setCollection(
+                $facturas->getCollection()->filter(function ($factura) use ($estado) {
+                    $totalPagado = $factura->pagos->sum('monto');
+                    $importe = $factura->importe_total;
+                
+                 switch ($estado) {
+                   case 'Pagada':
+                        return $totalPagado >= $importe;
+                    case 'Pendiente':
+                        return $totalPagado == 0;
+                    case 'Parcialmente':
+                        return $totalPagado > 0 && $totalPagado < $importe;
+                    default:
+                        return true;
+                }
+                })->values()
+            );
+        }
+
+        $deudaTotal = null;
+
+        if ($cliente) {
+            // Buscar al cliente filtrado y traer sus facturas con pagos
+            $clienteEncontrado = \App\Models\Cliente::where('razon_social', 'like', "%$cliente%")
+                ->with(['facturas.pagos'])
+                ->first();
+
+            if ($clienteEncontrado) {
+                $deudaTotal = $clienteEncontrado->facturas->reduce(function ($carry, $factura) {
+                    $pagado = $factura->pagos->sum('monto');
+                    $deuda = $factura->importe_total - $pagado;
+
+                    return $carry + max($deuda, 0);
+                }, 0);
+
             }
-            })->values()
-        );
-    }
+        }
 
-    return view('facturas.index', compact('facturas'));
+
+        return view('facturas.index', compact('facturas', 'deudaTotal'));
+
     }
 
     /**

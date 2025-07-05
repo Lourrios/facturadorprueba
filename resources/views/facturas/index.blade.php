@@ -77,12 +77,25 @@
                     @method('DELETE')
                     <button class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar factura?')">Borrar</button>
                 </form>
-               
+                @if ($totalPagado < $factura->importe_total)
+                    <a href="{{ route('pagos.create.from.factura', $factura->id) }}" class="btn btn-success btn-sm">Pagar</a>
+                @endif
             </td>
         </tr>
         @endforeach
     </tbody>
 </table>
+
+<div class="d-flex justify-content-between align-items-center mt-3">
+    @if($deudaTotal !== null)
+        <div>
+            <span class="badge bg-danger p-2" style="font-size: 1.1rem;">
+                Deuda total del cliente: ${{ number_format($deudaTotal, 2) }}
+            </span> 
+        </div>
+    @endif
+</div>
+
 
 <div class="pagination justify-content-end">
     {!! $facturas->links() !!}

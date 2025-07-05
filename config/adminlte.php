@@ -334,6 +334,11 @@ return [
             'label' => 4,
             'label_color' => 'success',
         */],
+          [
+            'text' => 'INICIO',
+            'url' => 'home',
+            'icon' => 'fas fa-fw fa-user',
+        ],
         ['header' => 'Administrar roles'],
         [
             'text' => 'Roles',

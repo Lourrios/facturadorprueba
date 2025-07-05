@@ -31,8 +31,9 @@ class FacturaController extends Controller
         $estado = $request->input('estado');
         $fecha = $request->input('fecha');
 
-        // Base query con relaciones y filtros directos
-        $query = Factura::with(['cliente', 'pagos'])
+
+    $query = Factura::with(['cliente', 'pagos'])
+
         ->when($cliente, function ($q) use ($cliente) {
             $q->whereHas('cliente', function ($subQuery) use ($cliente) {
                 $subQuery->where('razon_social', 'like', "%$cliente%");
@@ -41,6 +42,7 @@ class FacturaController extends Controller
         ->when($fecha, function ($q) use ($fecha) {
             $q->whereDate('fecha_emision', $fecha);
         });
+
 
         // Obtener paginadas (en bruto, sin filtro de estado aún)
         $facturas = $query->paginate(5)->appends($request->all());
@@ -54,13 +56,13 @@ class FacturaController extends Controller
                     $totalPagado = $factura->pagos->sum('monto');
                     $importe = $factura->importe_total;
                 
-                switch ($estado) {
-                    case 'Pagada':
+                 switch ($estado) {
+                   case 'Pagada':
                         return $totalPagado >= $importe;
                     case 'Pendiente':
-                        return $totalPagado >= 0 && $totalPagado < $importe;
-                    case 'Cancelada':
                         return $totalPagado == 0;
+                    case 'Parcialmente':
+                        return $totalPagado > 0 && $totalPagado < $importe;
                     default:
                         return true;
                 }
@@ -83,6 +85,7 @@ class FacturaController extends Controller
 
                     return $carry + max($deuda, 0);
                 }, 0);
+
             }
         }
 
@@ -225,4 +228,17 @@ class FacturaController extends Controller
         return $pdf->download("factura_{$factura->id}.pdf");
 
     }
+
+    public function enviarPorCorreo($id)
+{
+    $factura = Factura::with('cliente')->findOrFail($id);
+
+    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('facturas.pdf', compact('factura'));
+    $pdfData = $pdf->output();
+
+    \Illuminate\Support\Facades\Mail::to($factura->cliente->email)->send(new \App\Mail\FacturaGenerada($factura, $pdfData));
+
+    return redirect()->back()->with('success', 'Factura enviada por correo.');
+}
+
 }

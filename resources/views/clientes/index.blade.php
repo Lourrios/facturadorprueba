@@ -44,7 +44,9 @@
                 <td>{{ $cliente->condicion_iva }}</td>
                 <td>
                     @if($cliente->tieneFacturasAdeudadas())
-                        <span class="badge bg-danger">Adeudado</span>
+                        <a href="{{ route('facturas.index', ['cliente' => $cliente->razon_social, 'estado' => 'Pendiente']) }}" class="badge bg-warning">
+                            Adeudado
+                        </a>
                     @else
                         <span class="badge bg-success">Pagado</span>
                     @endif
@@ -59,6 +61,9 @@
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar?')">Eliminar</button>
                         </form>
                     @endcan
+                    @if ($cliente->tieneFacturasAdeudadas())
+                     
+                    @endif
                 </td>
                 
             </tr>

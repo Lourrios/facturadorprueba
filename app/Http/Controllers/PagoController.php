@@ -62,7 +62,7 @@ class PagoController extends Controller
             'monto' => 'required|numeric|min:0|max:99999999.99',
             'metodo_pago' => 'required|in:Efectivo,Transferencia,Cheque,Tarjeta',
             'observaciones' => 'nullable',
-            'numero_factura' => ['required', 'regex:/^[AB]\d{6}$/', Rule::exists('facturas', 'numero_factura')],
+            'numero_factura' => ['required', 'regex:/^[ABC]\d{6}$/', Rule::exists('facturas', 'numero_factura')],
             
           ]);
 

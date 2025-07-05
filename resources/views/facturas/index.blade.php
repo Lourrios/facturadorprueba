@@ -80,6 +80,17 @@
     </tbody>
 </table>
 
+<div class="d-flex justify-content-between align-items-center mt-3">
+    @if($deudaTotal !== null)
+        <div>
+            <span class="badge bg-danger p-2" style="font-size: 1.1rem;">
+                Deuda total del cliente: ${{ number_format($deudaTotal, 2) }}
+            </span> 
+        </div>
+    @endif
+</div>
+
+
 <div class="pagination justify-content-end">
     {!! $facturas->links() !!}
 </div>

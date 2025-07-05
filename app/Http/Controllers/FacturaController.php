@@ -43,7 +43,8 @@ class FacturaController extends Controller
         });
 
         // Obtener paginadas (en bruto, sin filtro de estado aún)
-        $facturas = $query->paginate(5);
+        $facturas = $query->paginate(5)->appends($request->all());
+
 
         // Aplicar filtro por estado sobre la colección ya paginada
         
@@ -67,7 +68,27 @@ class FacturaController extends Controller
             );
         }
 
-    return view('facturas.index', compact('facturas'));
+        $deudaTotal = null;
+
+        if ($cliente) {
+            // Buscar al cliente filtrado y traer sus facturas con pagos
+            $clienteEncontrado = \App\Models\Cliente::where('razon_social', 'like', "%$cliente%")
+                ->with(['facturas.pagos'])
+                ->first();
+
+            if ($clienteEncontrado) {
+                $deudaTotal = $clienteEncontrado->facturas->reduce(function ($carry, $factura) {
+                    $pagado = $factura->pagos->sum('monto');
+                    $deuda = $factura->importe_total - $pagado;
+
+                    return $carry + max($deuda, 0);
+                }, 0);
+            }
+        }
+
+
+        return view('facturas.index', compact('facturas', 'deudaTotal'));
+
     }
 
     /**

@@ -43,10 +43,10 @@
         <label>Observaciones</label>
         <input type="text" name="observaciones" class="form-control" value="{{ old('observaciones') }}">
     </div>
-
+    
     <div class="form-group">
         <label>Numero de factura *</label>
-        <input type="text" name="numero_factura" class="form-control" placeholder="Ej: A000001." required>
+        <input type="text" name="numero_factura" class="form-control" value="{{ $factura->numero_factura ?? '' }}" placeholder="Ej: A000001." required>
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>

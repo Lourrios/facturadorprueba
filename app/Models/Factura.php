@@ -32,4 +32,13 @@ class Factura extends Model
         
     }
 
+    public function estado()
+    {
+        $pagado = $this->pagos->sum('monto');
+        if ($pagado >= $this->importe_total) return 'Pagada';
+    
+        return 'Pendiente';
+    }
+
+
 }

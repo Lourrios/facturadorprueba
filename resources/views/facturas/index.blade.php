@@ -71,7 +71,9 @@
                     @method('DELETE')
                     <button class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar factura?')">Borrar</button>
                 </form>
-               
+                @if ($totalPagado < $factura->importe_total)
+                    <a href="{{ route('pagos.create.from.factura', $factura->id) }}" class="btn btn-success btn-sm">Pagar</a>
+                @endif
             </td>
         </tr>
         @endforeach

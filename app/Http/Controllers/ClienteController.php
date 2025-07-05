@@ -28,6 +28,8 @@ class ClienteController extends Controller
             ->orwhere('cuit','like', "%$busqueda%");
 
         })->paginate(5);
+
+        
         
         return view('clientes.index', compact('clientes','busqueda'));
 

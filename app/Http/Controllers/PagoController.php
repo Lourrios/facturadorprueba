@@ -39,10 +39,19 @@ class PagoController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(?string $factura_id=null)
     {
-        return view('pagos.create');
+        
+        if ($factura_id) {
+            $factura = Factura::findOrFail($factura_id);
+        }
+        else
+        {
+            $factura = null;
+        }
+        return view('pagos.create', compact('factura'));
     }
+
 
     /**
      * Store a newly created resource in storage.

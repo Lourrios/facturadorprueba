@@ -30,6 +30,7 @@
                 <th>Email</th>
                 <th>Teléfono</th>
                 <th>IVA</th>
+                <th>Saldo</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -42,6 +43,13 @@
                 <td>{{ $cliente->telefono }}</td>
                 <td>{{ $cliente->condicion_iva }}</td>
                 <td>
+                    @if($cliente->tieneFacturasAdeudadas())
+                        <span class="badge bg-danger">Adeudado</span>
+                    @else
+                        <span class="badge bg-success">Pagado</span>
+                    @endif
+                </td>
+                <td>
                     @can('editar-clientes')
                         <a class="btn btn-info btn-sm" href="{{ route('clientes.edit', $cliente->id) }}">Editar</a>
                     @endcan
@@ -52,6 +60,7 @@
                         </form>
                     @endcan
                 </td>
+                
             </tr>
         @endforeach
         </tbody>

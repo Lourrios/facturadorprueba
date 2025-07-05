@@ -29,11 +29,11 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label>Desde</label>
-                    <input type="date" name="fecha_desde" class="form-control" required>
+                    <input type="datetime-local" name="fecha_desde" class="form-control" required>
                 </div>
                 <div class="form-group col-md-6">
                     <label>Hasta</label>
-                    <input type="date" name="fecha_hasta" class="form-control" required>
+                    <input type="datetime-local" name="fecha_hasta" class="form-control" required>
                 </div>
             </div>
 

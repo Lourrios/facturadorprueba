@@ -202,4 +202,17 @@ class FacturaController extends Controller
         return $pdf->download("factura_{$factura->id}.pdf");
 
     }
+
+    public function enviarPorCorreo($id)
+{
+    $factura = Factura::with('cliente')->findOrFail($id);
+
+    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('facturas.pdf', compact('factura'));
+    $pdfData = $pdf->output();
+
+    \Illuminate\Support\Facades\Mail::to($factura->cliente->email)->send(new \App\Mail\FacturaGenerada($factura, $pdfData));
+
+    return redirect()->back()->with('success', 'Factura enviada por correo.');
+}
+
 }

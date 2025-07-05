@@ -1,17 +1,14 @@
-
-
 @component('mail::message')
 # ¡Hola, {{ $factura->cliente->razon_social }}!
 
-Se genero una nueva factura!
+Se generó una nueva factura.
 
-- Total: ${{ number_format($factura->importe_total, 2) }}
-- Fecha Emision: {{ $factura->fecha_emision }}
-- Periodo: Desde: {{ $factura->fecha_desde }}  /  Hasta:{{ $factura->fecha_hasta }}
+- **Total:** ${{ number_format($factura->importe_total, 2) }}
+- **Fecha Emisión:** {{ \Carbon\Carbon::parse($factura->fecha_emision)->format('d/m/Y H:i') }}
+- **Periodo:** {{ $factura->periodo_mes }}/{{ $factura->periodo_anio }}
 
-Factura {{ $factura->numero_factura }} adjunta en pdf!
+Adjuntamos el PDF de la factura en este correo.
 
-Saludos,  
-{{ config('app.name') }}
+Gracias por confiar en Vida Digital,<br>
+**{{ config('app.name') }}**
 @endcomponent
-

@@ -66,6 +66,12 @@
             <td>
                 <a href="{{ route('facturas.edit', $factura->id) }}" class="btn btn-info btn-sm">Editar</a>
                 <a href="{{ asset('storage/factura_' . $factura->id . '.pdf') }}" target="_blank" class="btn btn-secondary btn-sm">PDF</a>
+                
+                <a href="{{ route('facturas.enviar-pdf', $factura->id) }}" class="btn btn-warning btn-sm"
+                    onclick="return confirm('¿Enviar esta factura por correo electrónico?')">
+                    Enviar por Mail
+                </a>
+                
                 <form action="{{ route('facturas.destroy', $factura->id) }}" method="POST" style="display:inline">
                     @csrf
                     @method('DELETE')

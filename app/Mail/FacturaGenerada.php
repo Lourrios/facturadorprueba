@@ -45,13 +45,14 @@ class FacturaGenerada extends Mailable
         return new Content(
             markdown: 'mail.factura-generada',
         );
+        
     }
 
 
     public function build()
     {
        return $this->subject('Factura ' . $this->factura->numero_factura)
-            ->markdown('emails.factura')
+            ->markdown('mail.factura-generada')
             ->attachData(
                 $this->pdfData,
                 'Factura_' . $this->factura->numero_factura . '.pdf',

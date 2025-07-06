@@ -342,57 +342,68 @@ return [
         ['header' => 'Administrar roles'],
         [
             'text' => 'Roles',
-            'url' => 'roles',
-            'icon' => 'fas fa-fw fa-user',
+            'url'  => 'roles',
+            'icon' => 'fas fa-users-cog', // Icono de gestión de roles
         ],
         [
             'text' => 'Asignar roles',
-            'url' => 'usuarios',
-            'icon' => 'fas fa-fw fa-user',
+            'url'  => 'usuarios',
+            'icon' => 'fas fa-user-tag', // Icono de asignar rol a usuario
             'can'  => 'ver-usuarios',
         ],
-         ['header' => 'Administrar usuarios'],
+
+        [
+            'header' => 'Administrar usuarios',
+        ],
         [
             'text' => 'Alta Usuarios',
-            'url' => 'usuarios/create',
-            'icon' => 'fas fa-fw fa-user',
+            'url'  => 'usuarios/create',
+            'icon' => 'fas fa-user-plus', // Alta de usuario
             'can'  => 'crear-usuarios',
         ],
-         ['header' => 'Panel de clientes'],
-         [
 
+        [
+            'header' => 'Panel de clientes',
+        ],
+        [
             'text' => 'Listado Clientes',
-            'url' => 'clientes',
-            'icon' => 'fas fa-fw fa-user',
+            'url'  => 'clientes',
+            'icon' => 'fas fa-users', // Lista de clientes
         ],
-         [
+        [
             'text' => 'Alta Clientes',
-            'url' => 'clientes/create',
+            'url'  => 'clientes/create',
+            'icon' => 'fas fa-user-plus', // Alta cliente
+        ],
 
-            'icon' => 'fas fa-fw fa-user',
+        [
+            'header' => 'Panel de Facturas',
         ],
-         ['header' => 'Panel de Facturas'],
-         [
+        [
             'text' => 'Listado de factura',
-            'url' => 'facturas',
-            'icon' => 'fas fa-fw fa-user',
+            'url'  => 'facturas',
+            'icon' => 'fas fa-file-invoice', // Listado de facturas
         ],
-         [
+        [
             'text' => 'Alta factura',
-            'url' => 'facturas/create',
-            'icon' => 'fas fa-fw fa-user',
+            'url'  => 'facturas/create',
+            'icon' => 'fas fa-file-invoice-dollar', // Alta factura
         ],
-         ['header' => 'Panel de Pagos'],
-         [
+
+        [
+            'header' => 'Panel de Pagos',
+        ],
+        [
             'text' => 'Pagos',
-            'url' => 'pagos',
-            'icon' => 'fas fa-fw fa-user',
+            'url'  => 'pagos',
+            'icon' => 'fas fa-credit-card', // Lista de pagos
         ],
-         [
+        [
             'text' => 'Ingresar Pago',
-            'url' => 'pagos/create',
-            'icon' => 'fas fa-fw fa-user',
+            'url'  => 'pagos/create',
+            'icon' => 'fas fa-money-check-alt', // Ingresar pago
         ],
+
        /* [
             'text' => 'change_password',
             'url' => 'admin/settings',

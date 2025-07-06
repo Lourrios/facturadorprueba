@@ -14,10 +14,12 @@ class FacturaController extends Controller
 {
       public function __construct()
     {
-        $this->middleware('permission:ver-facturas', ['only' => ['index']]);
+        $this->middleware('permission:ver-facturas|crear-facturas|editar-facturas|borrar-facturas',['only' => ['index']]);
         $this->middleware('permission:crear-facturas', ['only' => ['create','store']]);
         $this->middleware('permission:editar-facturas', ['only' => ['edit','update']]);
         $this->middleware('permission:borrar-facturas', ['only' => ['destroy']]);
+        $this->middleware('permission:descargar-facturas', ['only' => ['descargarPDF']]);
+        $this->middleware('permission:enviar-facturas', ['only' => ['enviarPorCorreo']]);
     }
 
 

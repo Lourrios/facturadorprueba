@@ -64,22 +64,34 @@
             </td>
 
             <td>
-                <a href="{{ route('facturas.edit', $factura->id) }}" class="btn btn-info btn-sm">Editar</a>
-                <a href="{{ asset('storage/factura_' . $factura->id . '.pdf') }}" target="_blank" class="btn btn-secondary btn-sm">PDF</a>
+                @can('editar-facturas')
+                    <a href="{{ route('facturas.edit', $factura->id) }}" class="btn btn-info btn-sm">Editar</a>
+                @endcan
                 
-                <a href="{{ route('facturas.enviar-pdf', $factura->id) }}" class="btn btn-warning btn-sm"
+                @can('descargar-facturas')
+                    <a href="{{ asset('storage/factura_' . $factura->id . '.pdf') }}" target="_blank" class="btn btn-secondary btn-sm">PDF</a>
+                @endcan
+                
+                @can('enviar-facturas')
+                     <a href="{{ route('facturas.enviar-pdf', $factura->id) }}" class="btn btn-warning btn-sm"
                     onclick="return confirm('¿Enviar esta factura por correo electrónico?')">
                     Enviar por Mail
                 </a>
+                 @endcan
                 
+                @can('borrar-facturas')
                 <form action="{{ route('facturas.destroy', $factura->id) }}" method="POST" style="display:inline">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar factura?')">Borrar</button>
-                </form>
-                @if ($totalPagado < $factura->importe_total)
+                 </form>
+                @endcan
+
+                @can('crear-pagos')
+                    @if ($totalPagado < $factura->importe_total)
                     <a href="{{ route('pagos.create.from.factura', $factura->id) }}" class="btn btn-success btn-sm">Pagar</a>
-                @endif
+                    @endif
+                @endcan
             </td>
         </tr>
         @endforeach

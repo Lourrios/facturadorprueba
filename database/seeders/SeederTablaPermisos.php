@@ -35,6 +35,9 @@ class SeederTablaPermisos extends Seeder
             'editar-facturas',
             'borrar-facturas',
 
+            'descargar-facturas',   
+            'enviar-facturas',
+
             'ver-pago',
             'crear-pago',
             'editar-pago',

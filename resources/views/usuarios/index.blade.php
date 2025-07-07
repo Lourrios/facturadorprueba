@@ -3,16 +3,16 @@
 @section('title', 'Home')
 
 @section('content_header')
-    <h1>Usuarios</h1>
+    <h1>Listado de Usuarios</h1>
 @stop
 
 @section('content')
     @can('ver-usuarios')
-    <p>Contenido</p>
-    <h3 class="text-center">Contenido</h3>
+    
+    <h3 class="text-center">Usuario segun su rol</h3>
 
     @can('crear-usuarios')
-        <a class="btn btn-warning" href="{{ route('usuarios.create') }}">Nuevo</a>
+        <a class="btn btn-warning" href="{{ route('usuarios.create') }}">Nuevo Usuario</a>
     @endcan
 
     <table class="table table-striped mt-2">

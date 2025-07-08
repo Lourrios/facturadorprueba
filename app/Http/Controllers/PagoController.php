@@ -21,6 +21,7 @@ class PagoController extends Controller
     public function index(Request $request)
     {
         $busqueda = $request->input('busqueda');
+        
 
         $pagos = Pago::with('factura')
         ->when($busqueda, function($query, $busqueda) {
@@ -41,6 +42,7 @@ class PagoController extends Controller
      */
     public function create(?string $factura_id=null)
     {
+        $facturas = Factura::all();
         
         if ($factura_id) {
             $factura = Factura::findOrFail($factura_id);
@@ -49,7 +51,7 @@ class PagoController extends Controller
         {
             $factura = null;
         }
-        return view('pagos.create', compact('factura'));
+        return view('pagos.create', compact('factura', 'facturas'));
     }
 
 
@@ -67,7 +69,7 @@ class PagoController extends Controller
           ]);
 
         $factura = Factura::where('numero_factura', $request->numero_factura)->first();
-
+ 
         if ($request->monto > $factura->importe_total) {
             return back()
                 ->withErrors(['monto' => 'El monto ingresado no puede ser mayor al total de la factura ($' . number_format($factura->importe_total, 2) . ').']

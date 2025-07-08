@@ -34,7 +34,7 @@ class FacturaController extends Controller
         $fecha = $request->input('fecha');
 
 
-    $query = Factura::with(['cliente', 'pagos'])
+        $query = Factura::with(['cliente', 'pagos'])
 
         ->when($cliente, function ($q) use ($cliente) {
             $q->whereHas('cliente', function ($subQuery) use ($cliente) {
@@ -43,34 +43,29 @@ class FacturaController extends Controller
         })
         ->when($fecha, function ($q) use ($fecha) {
             $q->whereDate('fecha_emision', $fecha);
+        })
+        ->orderBy('fecha_emision', 'desc');;
+
+
+        //Filtro de facturas segun el estado
+        $facturas = $query->get()->filter(function ($factura) use ($estado) {
+            return !$estado || $factura->estado() === $estado;
         });
 
 
-        // Obtener paginadas (en bruto, sin filtro de estado aún)
-        $facturas = $query->paginate(5)->appends($request->all());
+        // Paginar manualmente
+        $page = request()->get('page', 1);
+        $perPage = 5;
+        $paginated = new \Illuminate\Pagination\LengthAwarePaginator(
+            $facturas->forPage($page, $perPage),
+            $facturas->count(),
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
 
+        $facturas = $paginated;
 
-        // Aplicar filtro por estado sobre la colección ya paginada
-        
-        if ($estado) {
-            $facturas->setCollection(
-                $facturas->getCollection()->filter(function ($factura) use ($estado) {
-                    $totalPagado = $factura->pagos->sum('monto');
-                    $importe = $factura->importe_total;
-                
-                 switch ($estado) {
-                   case 'Pagada':
-                        return $totalPagado >= $importe;
-                    case 'Pendiente':
-                        return $totalPagado == 0;
-                    case 'Parcialmente':
-                        return $totalPagado > 0 && $totalPagado < $importe;
-                    default:
-                        return true;
-                }
-                })->values()
-            );
-        }
 
         $deudaTotal = null;
 
@@ -127,15 +122,19 @@ class FacturaController extends Controller
         $cliente = Cliente::findOrFail($request->cliente_id);
         $condicionIva =$cliente->condicion_iva;
 
-        switch($condicionIva){
-            case 'Responsable Inscripto': $prefijo= 'A';
-            break;
+        switch($condicionIva) {
+            case 'Responsable Inscripto':
+                $prefijo = 'A';
+                break;
+
             case 'Monotributo':
             case 'Exento':
-            case 'Consumidor Final' :
-                default: $prefijo = 'C';
+            case 'Consumidor Final':
+            default:
+                $prefijo = 'B';
                 break;
         }
+
 
         // Busca última factura del tipo (A o C)
         $ultimo = Factura::where('numero_factura', 'like', $prefijo . '%')
@@ -219,8 +218,9 @@ class FacturaController extends Controller
     public function destroy(string $id)
     {
         $factura = Factura::findOrFail($id);
-        $factura->delete();
-        return redirect()->route('facturas.index')->with('success', 'Factura eliminada.');
+        $factura->activo = 0;
+        $factura->save();
+        return redirect()->route('facturas.index')->with('success', 'Se ha dado de baja a la factura'. $factura->numero_factura .'.');
     }
 
     //Descarga del archivo pdf

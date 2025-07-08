@@ -7,16 +7,6 @@
 @stop
 
 @section('content')
-         @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                    <strong>{{ session('success') }}</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @endif
-
-
 
           @can('crear-rol')
             <a class="btn btn-warning" href="{{ route('roles.create') }}">Nuevo</a>                        

@@ -32,12 +32,21 @@ class Factura extends Model
         
     }
 
-    public function estado()
+    public function estado(): string
     {
-        $pagado = $this->pagos->sum('monto');
-        if ($pagado >= $this->importe_total) return 'Pagada';
-    
-        return 'Pendiente';
+        if ($this->activo == 0) {
+            return 'Cancelada';
+        }
+
+        $totalPagado = $this->pagos->sum('monto');
+
+        if ($totalPagado == 0) {
+            return 'Pendiente';
+        } elseif ($totalPagado >= $this->importe_total) {
+            return 'Pagada';
+        } else {
+            return 'Parcialmente';
+        }
     }
 
 

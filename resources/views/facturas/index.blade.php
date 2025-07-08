@@ -16,17 +16,30 @@
 <a href="{{ route('facturas.create') }}" class="btn btn-primary mb-3">Nueva Factura</a>
 
 <form method="GET" action="{{ route('facturas.index') }}" class="mb-3 d-flex flex-wrap gap-2 align-items-center">
-<input type="text" name="cliente" id="cliente-buscador" value="{{ request('cliente') }}" placeholder="Buscar Cliente..." class="form-control w-auto">
-    <select name="estado" class="form-control w-auto">
-        <option value="">-- Estado --</option>
-        <option value="Pagada" {{ request('estado') == 'Pagada' ? 'selected' : '' }}>Pagada</option>
-        <option value="Pendiente" {{ request('estado') == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
-         <option value="Parcialmente" {{ request('estado') == 'Parcialmente' ? 'selected' : '' }}>Parcialmente Pagada</option>
-    </select>
-    <input type="date" name="fecha" value="{{ request('fecha') }}" class="form-control w-auto">
-    <button type="submit" class="btn btn-secondary">Filtrar</button>
 
-    <a href="{{route('facturas.index')}}" class="btn btn-outline-danger">Limpiar filtros</a>
+  <div class="d-flex align-items-center flex-wrap">
+
+        <input type="text" name="cliente" id="cliente-buscador"
+            value="{{ request('cliente') }}" placeholder="Buscar Cliente..."
+            class="form-control w-auto mr-2 mb-2">
+
+        <select name="estado" class="form-control w-auto mr-2 mb-2">
+            <option value="">-- Estado --</option>
+            <option value="Pagada" {{ request('estado') == 'Pagada' ? 'selected' : '' }}>Pagada</option>
+            <option value="Pendiente" {{ request('estado') == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
+            <option value="Cancelada" {{ request('estado') == 'Cancelada' ? 'selected' : '' }}>Cancelada</option>
+        </select>
+
+        <input type="date" name="fecha" value="{{ request('fecha') }}"
+            class="form-control w-auto mr-2 mb-2">
+
+        <button type="submit" class="btn btn-secondary mr-2 mb-2">Filtrar</button>
+
+        <a href="{{ route('facturas.index') }}" class="btn btn-outline-danger mb-2">Limpiar filtros</a>
+
+    </div>
+
+
 
 </form>
 
@@ -54,13 +67,15 @@
                     $totalPagado = $factura->pagos->sum('monto');
                 @endphp
 
-                 @if($totalPagado == 0)
-                        <span class="badge badge-warning">Pendiente</span>
-                    @elseif($totalPagado >= $factura->importe_total)
-                        <span class="badge badge-success">Pagada</span>
-                    @else
-                        <span class="badge badge-info">Parcialmente pagada</span>
-                 @endif
+                @if($totalPagado == 0)
+                    <span class="badge badge-warning">Pendiente</span>
+                @elseif($totalPagado >= $factura->importe_total)
+                    <span class="badge badge-success">Pagada</span>
+                @elseif($factura->activa == 0)
+                    <span class="badge badge-danger">Cancelada</span>
+                @else
+                    <span class="badge badge-info">Parcialmente Pagada</span>
+                @endif
             </td>
 
             <td>
@@ -83,7 +98,7 @@
                 <form action="{{ route('facturas.destroy', $factura->id) }}" method="POST" style="display:inline">
                     @csrf
                     @method('DELETE')
-                    <button class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar factura?')">Borrar</button>
+                    <button class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar factura?')">Cancelar</button>
                  </form>
                 @endcan
 

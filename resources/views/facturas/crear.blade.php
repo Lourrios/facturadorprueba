@@ -51,9 +51,10 @@
                 <label>Condición de Pago</label>
                 <select name="condicion_pago" class="form-control" required>
                     <option value="">-- Seleccionar --</option>
-                    <option value="Contado">Contado</option>
+                    <option value="Efectivo">Efectivo</option>
                     <option value="Transferencia">Transferencia</option>
                     <option value="Cheque">Cheque</option>
+                    <option value="Tarjeta">Tarjeta</option>
                 </select>
             </div>
 

@@ -29,15 +29,16 @@
     </div>
 
     <div class="form-group">
-        <label>Metodo de pago *</label>
+        <label>Método de pago *</label>
         <select name="metodo_pago" class="form-control" required>
             <option value="">-- Seleccionar --</option>
-            <option value="Efectivo">Efectivo</option>
-            <option value="Transferencia">Transferencia</option>
-            <option value="Cheque">Cheque</option>
-            <option value="Tarjeta">Tarjeta</option>
+            <option value="Efectivo" {{ (old('condicion_pago', $factura->condicion_pago ?? '') == 'Efectivo') ? 'selected' : '' }}>Efectivo</option>
+            <option value="Transferencia" {{ (old('condicion_pago', $factura->condicion_pago ?? '') == 'Transferencia') ? 'selected' : '' }}>Transferencia</option>
+            <option value="Cheque" {{ (old('condicion_pago', $factura->condicion_pago ?? '') == 'Cheque') ? 'selected' : '' }}>Cheque</option>
+            <option value="Tarjeta" {{ (old('condicion_pago', $factura->condicion_pago ?? '') == 'Tarjeta') ? 'selected' : '' }}>Tarjeta</option>
         </select>
     </div>
+
 
     <div class="form-group">
         <label>Observaciones</label>

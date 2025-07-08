@@ -13,11 +13,24 @@
         <a class="btn btn-success mb-3" href="{{ route('clientes.create') }}">Nuevo Cliente</a>
     @endcan
 
-    <form method="GET" action="{{ route('clientes.index') }}" class="mb-3">
-        <input type="text" name="busqueda" value="{{ $busqueda }}" placeholder="Buscar..." class="form-control w-25 d-inline-block">
-        <button type="submit" class="btn btn-primary">Buscar</button>
-    </form>
+    <div class="d-flex align-items-center mb-2">
 
+        <form method="GET" action="{{ route('clientes.index') }}" class="d-flex align-items-center flex-wrap gap-2">
+            <input type="text" name="busqueda" value="{{ $busqueda }}" 
+                placeholder="Buscar..." class="form-control w-auto mr-2">
+
+            <select name="estado_deuda" class="form-control w-auto mr-2">
+                <option value="">-- Estado de deuda --</option>
+                <option value="pagado" {{ request('estado_deuda') == 'pagado' ? 'selected' : '' }}>Pagado</option>
+                <option value="adeudado" {{ request('estado_deuda') == 'adeudado' ? 'selected' : '' }}>Adeudado</option>
+            </select>
+
+            <button type="submit" class="btn btn-primary w-auto mr-2">Buscar</button>
+            <a href="{{ route('clientes.index') }}" class="btn btn-outline-danger">Limpiar filtros</a>
+        </form>
+
+    </div>
+    
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif

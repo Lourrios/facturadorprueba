@@ -22,18 +22,46 @@ class ClienteController extends Controller
     public function index(Request $request)
     {
         $busqueda = $request->input('busqueda');
+        $estadoDeuda = $request->input('estado_deuda');
 
-        $clientes= Cliente::when($busqueda, function($query, $busqueda){
-            return $query->where('razon_social','like',"%$busqueda%")
-            ->orwhere('cuit','like', "%$busqueda%");
+        $clientes = Cliente::with('facturas.pagos')
+            ->when($busqueda, function ($query, $busqueda) {
+                return $query->where('razon_social', 'like', "%$busqueda%")
+                            ->orWhere('cuit', 'like', "%$busqueda%");
+            })
+            ->get()
+            ->filter(function ($cliente) use ($estadoDeuda) {
+                if (!$estadoDeuda) return true;
 
-        })->paginate(5);
+                if ($estadoDeuda === 'pagado') {
+                    return !$cliente->tieneFacturasAdeudadas();
+                } elseif ($estadoDeuda === 'adeudado') {
+                    return $cliente->tieneFacturasAdeudadas();
+                }
 
-        
-        
-        return view('clientes.index', compact('clientes','busqueda'));
+                return true;
+            })
+            ->values(); // importante para resetear índices
 
+        // 🔽 PAGINADO MANUAL
+        $page = $request->input('page', 1);
+        $perPage = 5;
+
+        $paginated = new \Illuminate\Pagination\LengthAwarePaginator(
+            $clientes->forPage($page, $perPage),
+            $clientes->count(),
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
+        return view('clientes.index', [
+            'clientes' => $paginated,
+            'busqueda' => $busqueda,
+            'estadoDeuda' => $estadoDeuda,
+        ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

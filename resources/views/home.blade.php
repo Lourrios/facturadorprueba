@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-
+ 
       <div class="section-body">
     <div class="row">
         {{-- Usuarios --}}
@@ -78,6 +78,7 @@
 @section('css')
     {{-- Add here extra stylesheets --}}
    <link rel="stylesheet" href="{{ asset('css/admin_custom.css') }}">
+   @stop
 
 @section('js')
     <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>

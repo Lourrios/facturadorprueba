@@ -79,28 +79,7 @@
             </td>
 
             <td>
-                @can('editar-facturas')
-                    <a href="{{ route('facturas.edit', $factura->id) }}" class="btn btn-info btn-sm">Editar</a>
-                @endcan
-                
-                @can('descargar-facturas')
-                    <a href="{{ asset('storage/factura_' . $factura->id . '.pdf') }}" target="_blank" class="btn btn-secondary btn-sm">PDF</a>
-                @endcan
-                
-                @can('enviar-facturas')
-                     <a href="{{ route('facturas.enviar-pdf', $factura->id) }}" class="btn btn-warning btn-sm"
-                    onclick="return confirm('¿Enviar esta factura por correo electrónico?')">
-                    Enviar por Mail
-                </a>
-                 @endcan
-                
-                @can('borrar-facturas')
-                <form action="{{ route('facturas.destroy', $factura->id) }}" method="POST" style="display:inline">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar factura?')">Cancelar</button>
-                 </form>
-                @endcan
+                <a href="{{ route('facturas.show', $factura->id) }}" class="btn btn-primary btn-sm">Ver factura</a>
 
                 @can('crear-pagos')
                     @if ($totalPagado < $factura->importe_total)

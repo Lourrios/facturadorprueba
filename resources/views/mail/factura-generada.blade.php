@@ -10,5 +10,5 @@ Se generó una nueva factura.
 Adjuntamos el PDF de la factura en este correo.
 
 Gracias por confiar en Vida Digital,<br>
-**{{ config('app.name') }}**
+VIDA DIGITAL
 @endcomponent

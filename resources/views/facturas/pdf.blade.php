@@ -9,61 +9,139 @@
             font-size: 12px;
             color: #333;
         }
+
         .container {
             width: 100%;
             margin: 0 auto;
             padding: 20px;
         }
-        .header, .footer {
+
+        .tipo-factura-central {
             text-align: center;
-            margin-bottom: 20px;
-        }
-        .logo {
-            width: 180px;
             margin-bottom: 10px;
         }
-        .datos-empresa {
-            text-align: left;
+
+        .factura-tipo {
+            font-size: 50px;
+            font-weight: bold;
+            border: 2px solid #000;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            border-radius: 5px;
+            margin: 0 auto 5px auto;
         }
+
+        .factura-numero {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .fecha-emision-superior {
+            font-size: 12px;
+            margin-bottom: 5px;
+            text-align: right;
+        }
+
+        .logo {
+            width: 250px;
+        }
+
+        .info-empresa {
+            font-size: 11px;
+            line-height: 1.4;
+            margin-top: 5px;
+        }
+
+        .datos-empresa {
+            text-align: right;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .datos-cliente{
+            border: 1px solid #333;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            background-color: #f9f9f9;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
         }
+
         th, td {
             border: 1px solid #999;
             padding: 8px;
             text-align: left;
         }
+
         .bold {
             font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 <div class="container">
+
+    <!-- FACTURA TIPO Y NUMERO CENTRADO -->
+    <div class="tipo-factura-central">
+        <div class="factura-tipo">{{ substr($factura->numero_factura, 0, 1) }}</div>
+        <div class="factura-numero">Factura Nº {{ $factura->numero_factura }}</div>
+    </div>
+
+    <!-- ENCABEZADO CON LOGO E INFORMACIÓN -->
     <div class="header">
-        <img src="{{ public_path('public\logo\logo.png') }}" class="logo" alt="Vida Digital">
-        <div class="datos-empresa">
-            <p class="bold">VIDA DIGITAL S.R.L.</p>
-            <p>CUIT: 30-71645899-3</p>
-            <p>Dirección: Corrientes 1122, Goya, Corrientes</p>
-            <p>Email: contacto@vidadigital.com.ar</p>
-            <p>Tel: 3777-432100</p>
+        <!-- Logo + contacto -->
+        <div>
+            <img src="{{ public_path('logo/logo.png') }}" class="logo" alt="Logo Vida Digital">
+            <div class="info-empresa">
+                <strong>VIDA DIGITAL S.R.L.</strong><br>
+                contacto@vidadigital.com.ar<br>
+                Corrientes 1122, Goya<br>
+                Tel: 3777-432100
+            </div>
         </div>
+
+        <div class="datos-empresa">
+            <div class="fecha-emision-superior">
+                <strong>Fecha de Emisión:</strong> {{ \Carbon\Carbon::parse($factura->fecha_emision)->format('d/m/Y') }}
+            </div>
+            <br>
+            <strong>VIDA DIGITAL S.R.L.</strong><br>
+            CUIT: 30-71645899-3<br>
+            Condición IVA: Responsable Inscripto<br>
+            Punto de Venta: 0001
+        </div>
+
     </div>
 
     <hr>
 
-    <h3>Factura Nº {{ $factura->numero_factura }}</h3>
-
-    <p><strong>Cliente:</strong> {{ $factura->cliente->razon_social }}</p>
-    <p><strong>CUIT:</strong> {{ $factura->cliente->cuit }}</p>
-    <p><strong>Condición IVA:</strong> {{ $factura->cliente->condicion_iva }}</p>
-    <p><strong>Periodo Facturado:</strong> {{ $factura->periodo_mes }}/{{ $factura->periodo_anio }}</p>
-    <p><strong>Desde:</strong> {{ \Carbon\Carbon::parse($factura->fecha_desde)->format('d/m/Y') }} <strong>Hasta:</strong> {{ \Carbon\Carbon::parse($factura->fecha_hasta)->format('d/m/Y') }}</p>
-    <p><strong>Fecha de Emisión:</strong> {{ \Carbon\Carbon::parse($factura->fecha_emision)->format('d/m/Y') }}</p>
-    <p><strong>Condición de Pago:</strong> {{ $factura->condicion_pago }}</p>
+    <div class="datos-cliente">
+        <p><strong>Cliente:</strong> {{ $factura->cliente->razon_social }}</p>
+        <p><strong>CUIT:</strong> {{ $factura->cliente->cuit }}</p>
+        <p><strong>Condición IVA:</strong> {{ $factura->cliente->condicion_iva }}</p>
+        <p><strong>Desde:</strong> {{ \Carbon\Carbon::parse($factura->fecha_desde)->format('d/m/Y') }}
+            <strong>Hasta:</strong> {{ \Carbon\Carbon::parse($factura->fecha_hasta)->format('d/m/Y') }}</p>
+        <p><strong>Fecha de Emisión:</strong> {{ \Carbon\Carbon::parse($factura->fecha_emision)->format('d/m/Y') }}</p>
+        <p><strong>Condición de Pago:</strong> {{ $factura->condicion_pago }}</p>
+    </div>
 
     <table>
         <thead>

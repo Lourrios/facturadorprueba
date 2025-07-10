@@ -12,10 +12,10 @@ class PagoController extends Controller
 {
     public function __construct() {
         
-        $this->middleware('permission:ver-pagos|crear-pagos|editar-pagos|borrar-pagos', ['only' => ['index']]);
-        $this->middleware('permission:crear-pagos', ['only' => ['create','store']]);
-        $this->middleware('permission:editar-pagos', ['only' => ['edit','update']]);
-        $this->middleware('permission:borrar-pagos', ['only' => ['destroy']]);
+        $this->middleware('permission:ver-pago|crear-pagos|editar-pagos|borrar-pagos', ['only' => ['index']]);
+        $this->middleware('permission:crear-pago', ['only' => ['create','store']]);
+        $this->middleware('permission:editar-pago', ['only' => ['edit','update']]);
+        $this->middleware('permission:borrar-pago', ['only' => ['destroy']]);
     }
 
     public function index(Request $request)

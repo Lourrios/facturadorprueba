@@ -45,7 +45,7 @@ class Factura extends Model
         } elseif ($totalPagado >= $this->importe_total) {
             return 'Pagada';
         } else {
-            return 'Parcialmente';
+            return 'Pendiente';
         }
     }
 

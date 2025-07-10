@@ -71,7 +71,7 @@
                     <span class="badge badge-warning">Pendiente</span>
                 @elseif($totalPagado >= $factura->importe_total)
                     <span class="badge badge-success">Pagada</span>
-                @elseif($factura->activa == 0)
+                @elseif($factura->activa === 0)
                     <span class="badge badge-danger">Cancelada</span>
                 @else
                     <span class="badge badge-info">Parcialmente Pagada</span>

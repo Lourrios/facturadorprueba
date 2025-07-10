@@ -49,7 +49,7 @@
         <tr>
             <th>Nro</th>
             <th>Cliente</th>
-            <th>Importe</th>
+            <th>Importe Adeudado</th>
             <th>Periodo</th>
              <th>Estado</th>
             <th>Acciones</th>
@@ -57,21 +57,21 @@
     </thead>
     <tbody>
         @foreach($facturas as $factura)
-         <tr>
-            <td>{{ $factura->numero_factura }}</td>
-            <td>{{ $factura->cliente->razon_social }}</td>
-            <td>${{ number_format($factura->importe_total, 2, ',', '.') }}</td>
-            <td>{{ $factura->fecha_desde }} - {{ $factura->fecha_hasta }}</td>
-           <td>
                 @php 
                     $totalPagado = $factura->pagos->sum('monto');
                 @endphp
+         <tr>
+            <td>{{ $factura->numero_factura }}</td>
+            <td>{{ $factura->cliente->razon_social }}</td>
+            <td>${{ number_format($factura->importe_total - $totalPagado, 2, ',', '.') }}</td>
+            <td>{{ $factura->fecha_desde }} - {{ $factura->fecha_hasta }}</td>
+           <td>
 
-                @if($totalPagado == 0)
+                @if($totalPagado == 0)  
                     <span class="badge badge-warning">Pendiente</span>
                 @elseif($totalPagado >= $factura->importe_total)
                     <span class="badge badge-success">Pagada</span>
-                @elseif($factura->activa == 0)
+                @elseif($factura->activa === 0)
                     <span class="badge badge-danger">Cancelada</span>
                 @else
                     <span class="badge badge-info">Parcialmente Pagada</span>

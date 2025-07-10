@@ -61,19 +61,19 @@
             <div class="border rounded p-3 bg-light">
                 <div class="d-flex flex-wrap gap-2">
                     @can('editar-facturas')
-                        <a href="{{ route('facturas.edit', $factura->id) }}" class="btn btn-info  mb-2">Editar</a>
+                        <a href="{{ route('facturas.edit', $factura->id) }}" class="btn btn-info  mb-2 mr-2">Editar</a>
                     @endcan
 
                     @can('descargar-facturas')
-                        <a href="{{ asset('storage/factura_' . $factura->id . '.pdf') }}" target="_blank" class="btn btn-secondary mb-2">PDF</a>
+                        <a href="{{ asset('storage/factura_' . $factura->id . '.pdf') }}" target="_blank" class="btn btn-secondary mb-2 mr-2">PDF</a>
                     @endcan
 
                     @can('enviar-facturas')
-                        <a href="{{ route('facturas.enviar-pdf', $factura->id) }}" onclick="return confirm('¿Enviar esta factura por correo?')" class="btn btn-warning me-2 mb-2">Enviar por Mail</a>
+                        <a href="{{ route('facturas.enviar-pdf', $factura->id) }}" onclick="return confirm('¿Enviar esta factura por correo?')" class="btn btn-warning me-2 mb-2 mr-2">Enviar por Mail</a>
                     @endcan
 
                     @can('borrar-facturas')
-                        <form action="{{ route('facturas.destroy', $factura->id) }}" method="POST" class="mb-2 me-2" onsubmit="return confirm('¿Cancelar factura?')" style="display:inline;">
+                        <form action="{{ route('facturas.destroy', $factura->id) }}" method="POST" class="mb-2 me-2 mr-2" onsubmit="return confirm('¿Cancelar factura?')" style="display:inline;">
                             @csrf @method('DELETE')
                             <button class="btn btn-danger">Cancelar</button>
                         </form>

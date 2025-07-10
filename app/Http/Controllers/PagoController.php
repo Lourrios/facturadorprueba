@@ -11,8 +11,8 @@ use Carbon\Carbon;
 class PagoController extends Controller
 {
     public function __construct() {
-        
-        $this->middleware('permission:ver-pago|crear-pagos|editar-pagos|borrar-pagos', ['only' => ['index']]);
+
+        $this->middleware('permission:ver-pago|crear-pago|editar-pago|borrar-pago', ['only' => ['index']]);
         $this->middleware('permission:crear-pago', ['only' => ['create','store']]);
         $this->middleware('permission:editar-pago', ['only' => ['edit','update']]);
         $this->middleware('permission:borrar-pago', ['only' => ['destroy']]);

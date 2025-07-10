@@ -321,6 +321,7 @@ return [
         [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
+             'topnav_right' => true,
         ],
         [
            /* 'text' => 'blog',

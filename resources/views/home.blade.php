@@ -6,8 +6,6 @@
     <h1>Bienvenidos!</h1>
 @stop
 
-@section('content')
-
 @php
     use App\Models\User;
     use App\Models\Cliente;
@@ -23,6 +21,7 @@
 @endphp
 
 <div class="section-body">
+
     <div class="row">
 
         @can('ver-usuarios')
@@ -96,8 +95,10 @@
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('css/admin_custom.css') }}">
-@stop
+
+    {{-- Add here extra stylesheets --}}
+   <link rel="stylesheet" href="{{ asset('css/admin_custom.css') }}">
+   @stop
 
 @section('js')
     <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>

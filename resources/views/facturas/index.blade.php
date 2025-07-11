@@ -67,23 +67,24 @@
             <td>{{ $factura->fecha_desde }} - {{ $factura->fecha_hasta }}</td>
            <td>
 
-                @if($totalPagado == 0)  
-                    <span class="badge badge-warning">Pendiente</span>
+                @if($factura->activo === 0)  
+                    <span class="badge badge-danger">Cancelada</span>
                 @elseif($totalPagado >= $factura->importe_total)
                     <span class="badge badge-success">Pagada</span>
-                @elseif($factura->activa === 0)
-                    <span class="badge badge-danger">Cancelada</span>
+                @elseif($totalPagado === 0)
+                    <span class="badge badge-warning">Pendiente</span>
                 @else
                     <span class="badge badge-info">Parcialmente Pagada</span>
                 @endif
+
             </td>
 
             <td>
                 <a href="{{ route('facturas.show', $factura->id) }}" class="btn btn-primary btn-sm">Ver factura</a>
 
                 @can('crear-pagos')
-                    @if ($totalPagado < $factura->importe_total)
-                    <a href="{{ route('pagos.create.from.factura', $factura->id) }}" class="btn btn-success btn-sm">Pagar</a>
+                    @if ($totalPagado < $factura->importe_total && $factura->activo === 1)
+                        <a href="{{ route('pagos.create.from.factura', $factura->id) }}" class="btn btn-success btn-sm">Pagar</a>
                     @endif
                 @endcan
             </td>

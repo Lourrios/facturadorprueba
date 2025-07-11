@@ -5,7 +5,7 @@ Se generó una nueva factura.
 
 - **Total:** ${{ number_format($factura->importe_total, 2) }}
 - **Fecha Emisión:** {{ \Carbon\Carbon::parse($factura->fecha_emision)->format('d/m/Y H:i') }}
-- **Periodo:** {{ $factura->periodo_mes }}/{{ $factura->periodo_anio }}
+- **Periodo:** {{ $factura->fecha_desde }}  /  {{ $factura->fecha_hasta }}
 
 Adjuntamos el PDF de la factura en este correo.
 

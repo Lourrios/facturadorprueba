@@ -120,11 +120,11 @@ class ClienteController extends Controller
 
         $cliente = Cliente::findOrFail($id);
         $this->validate($request, [
-            'cuil' => 'required|numeric|digits_between:10,11|unique:clientes,cuil,' . $id,
+            'cuit' => 'required|numeric|digits_between:10,11|unique:clientes,cuit,' . $id,
             'razon_social' => 'required|string|max:255',
             'direccion' => 'required|string|max:255',
             'telefono' => 'required|string|max:20',
-            'condicion_iva' => 'required|in:Responsable Inscripto,Monotributista,Exento,Consumidor Final',
+            'condicion_iva' => 'required|in:Responsable Inscripto,Monotributo,Exento,Consumidor Final',
             'email' => 'required|email|unique:clientes,email,' . $id
 
             //Ejemplo: SELECT * FROM clientes WHERE email = 'correo@ejemplo.com' AND id != $id

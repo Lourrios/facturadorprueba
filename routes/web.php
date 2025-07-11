@@ -45,8 +45,6 @@ Route::group(['middleware'=>['auth']],function(){
     Route::get('/facturas/{id}/enviar-pdf', [FacturaController::class, 'enviarPorCorreo'])->name('facturas.enviar-pdf');
     Route::get('pagos/create/{factura_id}/factura', [PagoController::class, 'create'])
         ->name('pagos.create.from.factura');
-
-
     Route::resource('pagos', PagoController::class);
 
 

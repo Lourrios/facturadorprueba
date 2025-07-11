@@ -76,12 +76,14 @@ class FacturaController extends Controller
                 ->first();
 
             if ($clienteEncontrado) {
-                $deudaTotal = $clienteEncontrado->facturas->reduce(function ($carry, $factura) {
+               $deudaTotal = $clienteEncontrado->facturas
+                ->where('activo', 1)
+                ->reduce(function ($carry, $factura) {
                     $pagado = $factura->pagos->sum('monto');
                     $deuda = $factura->importe_total - $pagado;
-
                     return $carry + max($deuda, 0);
                 }, 0);
+
 
             }
         }

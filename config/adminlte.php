@@ -69,7 +69,7 @@ return [
     //'logo_img_xl' => null,
     //'logo_img_xl_class' => 'brand-image-xs',
     //'logo_img_alt' => 'Admin Logo',
-    'logo' => '<span style="color:#007bff; font-weight:bold;">Vida Digital</span>',
+'logo' => '<span style="font-family:Titillium Web, sans-serif; font-weight:700; letter-spacing:1px; color:#007bff;">VIDA DIGITAL</span>',
     'logo_img' => null,
     'logo_img_class' => '',
     'logo_img_alt' => '',
@@ -201,8 +201,9 @@ return [
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-light-info elevation-4',
+    'classes_sidebar' => 'sidebar-light-primary elevation-1',
 
+    //'classes_sidebar' => 'sidebar-light-info elevation-4',
    //'classes_sidebar' => 'sidebar-dark-primary elevation-4',
     'classes_sidebar_nav' => '',
     'classes_topnav' => 'navbar-ligh-info navbar-light',
@@ -290,7 +291,7 @@ return [
     */
 
     'laravel_asset_bundling' => false,
-    'laravel_css_path' => 'public\css\admin_custom.css',
+    'laravel_css_path' => 'css/admin_custom.css',
     'laravel_js_path' => 'js/app.js',
 
     /*
@@ -321,13 +322,9 @@ return [
         [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
-             'topnav_right' => true,
+            
         ],
-        [
-           /* 'text' => 'blog',
-            'url' => 'admin/blog',
-            'can' => 'manage-blog',
-        */],
+       
         [
           /*  'text' => 'pages',
             'url' => 'admin/pages',
@@ -340,13 +337,11 @@ return [
             'url' => 'home',
             'icon' => 'fas fa-fw fa-user',
         ],
-        ['header' => 'Administrar roles',
-          'can' => 'ver-roles'],
+        ['header' => 'Administrar roles'],
         [
             'text' => 'Roles',
             'url'  => 'roles',
-            'icon' => 'fas fa-users-cog',
-            'can' => 'ver-roles', // Icono de gestión de roles
+            'icon' => 'fas fa-users-cog', // Icono de gestión de roles
         ],
         [
             'text' => 'Asignar roles',
@@ -357,7 +352,6 @@ return [
 
         [
             'header' => 'Administrar usuarios',
-            'can' => 'ver-usuarios'
         ],
         [
             'text' => 'Alta Usuarios',
@@ -368,53 +362,44 @@ return [
 
         [
             'header' => 'Panel de clientes',
-            'can' => 'ver-clientes'
         ],
         [
             'text' => 'Listado Clientes',
             'url'  => 'clientes',
-            'icon' => 'fas fa-users',
-            'can' => 'ver-clientes',  // Lista de clientes
+            'icon' => 'fas fa-users', // Lista de clientes
         ],
         [
             'text' => 'Alta Clientes',
             'url'  => 'clientes/create',
-            'icon' => 'fas fa-user-plus',
-            'can' => 'crear-clientes' // Alta cliente
+            'icon' => 'fas fa-user-plus', // Alta cliente
         ],
 
         [
             'header' => 'Panel de Facturas',
-            'can' => 'ver-facturas'
         ],
         [
             'text' => 'Listado de factura',
             'url'  => 'facturas',
-            'icon' => 'fas fa-file-invoice', 
-            'can' => 'ver-facturas', // Listado de facturas
+            'icon' => 'fas fa-file-invoice', // Listado de facturas
         ],
         [
             'text' => 'Alta factura',
             'url'  => 'facturas/create',
-            'icon' => 'fas fa-file-invoice-dollar',
-            'can' => 'crear-facturas', // Alta factura
+            'icon' => 'fas fa-file-invoice-dollar', // Alta factura
         ],
 
         [
             'header' => 'Panel de Pagos',
-            'can' => 'ver-pago'
         ],
         [
-            'text' => 'Listado de Pagos',
+            'text' => 'Pagos',
             'url'  => 'pagos',
-            'icon' => 'fas fa-credit-card',
-            'can' => 'ver-pago',// Lista de pagos
+            'icon' => 'fas fa-credit-card', // Lista de pagos
         ],
         [
             'text' => 'Ingresar Pago',
             'url'  => 'pagos/create',
-            'icon' => 'fas fa-money-check-alt',
-            'can' => 'crear-pago', // Ingresar pago
+            'icon' => 'fas fa-money-check-alt', // Ingresar pago
         ],
 
        /* [

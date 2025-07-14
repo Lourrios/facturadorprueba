@@ -138,7 +138,7 @@ class FacturaController extends Controller
         }
 
 
-        // Busca última factura del tipo (A o C)
+        // Busca última factura del tipo (A o B)
         $ultimo = Factura::where('numero_factura', 'like', $prefijo . '%')
             ->orderBy('id', 'desc')
             ->first();
@@ -148,12 +148,18 @@ class FacturaController extends Controller
 
         $numero = $prefijo . str_pad($nuevoNumero, 6, '0', STR_PAD_LEFT);
 
+        
+        $descuento = $cliente->obtenerDescuentoPorMembresia();
+        $importeFinal = $request->importe_total * (1 - $descuento);
+        
         $ahora = Carbon::now();
 
         $factura = Factura::create([
             ...$request->all(),
+            'importe_total' => $importeFinal,
             'numero_factura' => $numero,
             'fecha_emision' => $ahora->toDateTimeString(),
+            'descuento_aplicado' => $descuento * 100,
         ]);
 
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ClienteController;
 use App\Models\Cliente;
 use App\Http\Controllers\FacturaController;
+use App\Http\Controllers\NotaController;
 use App\Http\Controllers\PagoController;
 
 
@@ -46,6 +47,13 @@ Route::group(['middleware'=>['auth']],function(){
     Route::get('pagos/create/{factura_id}/factura', [PagoController::class, 'create'])
         ->name('pagos.create.from.factura');
     Route::resource('pagos', PagoController::class);
+    //Route::get('/notas/crear', [NotaController::class, 'formCreate'])->name('notas.create');
+    Route::post('/notas',[NotaController::class, 'store'])->name('notas.store');
+    Route::get('notas/index', [NotaController::class, 'index'])->name('notas.index');
+    Route::get('/notas/crearNotaCredito/{factura}', [NotaController::class, 'formCredito'])->name('notas.create.credito');
+    Route::get('/notas/crearNotaDebito/{factura}', [NotaController::class, 'formDebito'])->name('notas.create.debito');
+    Route::get('/notas/{nota}', [NotaController::class, 'show'])->name('notas.show');
+    Route::get('/notas/pdf/{nota}', [NotaController::class, 'generatePdf'])->name('notas.pdf');
 
 
 });

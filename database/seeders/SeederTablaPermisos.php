@@ -42,6 +42,9 @@ class SeederTablaPermisos extends Seeder
             'crear-pago',
             'editar-pago',
             'borrar-pago',
+
+            'generar-notas',
+            'crear-notas'
         ];
         
         foreach($permisos as $permiso){

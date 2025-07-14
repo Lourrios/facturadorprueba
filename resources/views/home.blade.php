@@ -19,7 +19,7 @@
     $cant_facturas = Factura::count();
     $cant_pagos = Pago::count();
 @endphp
-
+ @section('content')
     <div class="section-body">
 
         <div class="row">

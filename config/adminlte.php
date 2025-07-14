@@ -401,6 +401,14 @@ return [
             'url'  => 'pagos/create',
             'icon' => 'fas fa-money-check-alt', // Ingresar pago
         ],
+         [
+            'header' => 'Panel de Notas',
+        ],
+        [
+            'text' => 'Notas generadas',
+            'url'  => 'notas/index',
+'icon' => 'fas fa-file-invoice', // Listado de facturas
+        ],
 
        /* [
             'text' => 'change_password',

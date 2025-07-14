@@ -72,19 +72,41 @@
                         <a href="{{ route('facturas.enviar-pdf', $factura->id) }}" onclick="return confirm('¿Enviar esta factura por correo?')" class="btn btn-warning me-2 mb-2 mr-2">Enviar por Mail</a>
                     @endcan
 
-                    @can('borrar-facturas')
+                 {{--   @can('borrar-facturas')
                         <form action="{{ route('facturas.destroy', $factura->id) }}" method="POST" class="mb-2 me-2 mr-2" onsubmit="return confirm('¿Cancelar factura?')" style="display:inline;">
                             @csrf @method('DELETE')
                             <button class="btn btn-danger">Cancelar</button>
                         </form>
+                    @endcan --}}
+                
+                @can('crear-nota')
+                        <div class="dropdown mb-2 me-2">
+                            <button class="btn btn-danger dropdown-toggle" type="button" id="notaDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Generar Nota
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="notaDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('notas.create.credito', $factura->id) }}">Nota de Crédito</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('notas.create.debito', $factura->id) }}">Nota de Débito</a>
+                                </li>
+                            </ul>
+                        </div>
                     @endcan
+
+                
+
                 </div>
             </div>
 
         </div>
     </div>
 </div>
+
+
 @stop
+
 
 @section('css')
     {{-- Add here extra stylesheets --}}
@@ -92,5 +114,6 @@
 @stop
 
 @section('js')
-    <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 @stop

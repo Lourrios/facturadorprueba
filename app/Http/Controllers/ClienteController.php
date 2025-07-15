@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cliente;
+use Carbon\Carbon;
 
 class ClienteController extends Controller
 {
@@ -84,8 +85,15 @@ class ClienteController extends Controller
             'condicion_iva' => 'required|in:Responsable Inscripto,Monotributo,Exento,Consumidor Final',
             'email' => 'required|email|unique:clientes,email'
         ]);
-    
-        Cliente::create($request->all());
+
+        $ahora = Carbon::now();
+          
+        $data = array_merge($request->all(), [
+            'fecha_membresia' => $ahora->toDateTimeString(),
+        ]);
+
+        Cliente::create($data);
+
     
        return redirect()->route('clientes.index')->with('success', 'Cliente creado correctamente');
 

@@ -11,6 +11,7 @@ use App\Models\Cliente;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\NotaController;
 use App\Http\Controllers\PagoController;
+use App\Http\Controllers\ReporteController;
 
 
 Route::get('/', function () {
@@ -54,6 +55,10 @@ Route::group(['middleware'=>['auth']],function(){
     Route::get('/notas/crearNotaDebito/{factura}', [NotaController::class, 'formDebito'])->name('notas.create.debito');
     Route::get('/notas/{nota}', [NotaController::class, 'show'])->name('notas.show');
     Route::get('/notas/pdf/{nota}', [NotaController::class, 'generatePdf'])->name('notas.pdf');
+    Route::get('reportes/index', [ReporteController::class,'index'])->name('reportes.index');
+    Route::get('reportes/exportar', [ReporteController::class,'exportarExcel'])->name('reportes.exportarExcel');
+    Route::get('reportes/mensual/exportar', [ReporteController::class, 'exportarReporteMensual'])->name('reportes.mensual.exportar');
+    Route::get('reportes/mensual', [ReporteController::class, 'reporteMensual'])->name('reportes.mensual');
 
 
 });

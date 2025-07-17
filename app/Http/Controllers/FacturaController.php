@@ -117,7 +117,7 @@ class FacturaController extends Controller
              'detalle' => 'required',
              'importe_total'=> 'required|numeric|min:0',
              'condicion_pago' => 'required',
-
+                
 
         ]);
         //GENERACION AUTOMATICA DE NUMERO DE FACTURA

@@ -60,9 +60,9 @@
             
             <div class="border rounded p-3 bg-light">
                 <div class="d-flex flex-wrap gap-2">
-                    @can('editar-facturas')
+                  {{--  @can('editar-facturas')
                         <a href="{{ route('facturas.edit', $factura->id) }}" class="btn btn-info  mb-2 mr-2">Editar</a>
-                    @endcan
+                    @endcan --}}
 
                     @can('descargar-facturas')
                         <a href="{{ asset('storage/factura_' . $factura->id . '.pdf') }}" target="_blank" class="btn btn-secondary mb-2 mr-2">PDF</a>

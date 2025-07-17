@@ -58,6 +58,13 @@
                 </select>
             </div>
 
+
+            <div class="form-check mb-3">
+                <input type="checkbox" name="recurrente" value="1" class="form-check-input" id="recurrente">
+                <label for="recurrente" class="form-check-label">¿Facturar esta factura todos los meses?</label>
+            </div>
+
+
             <button type="submit" class="btn btn-primary">Guardar</button>
             <a href="{{ route('facturas.index') }}" class="btn btn-secondary">Cancelar</a>
 

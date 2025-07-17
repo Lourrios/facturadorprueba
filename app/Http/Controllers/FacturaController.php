@@ -109,7 +109,6 @@ class FacturaController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
              'cliente_id' => 'required|exists:clientes,id',
              'fecha_desde' => 'required|date',
@@ -118,62 +117,67 @@ class FacturaController extends Controller
              'importe_total'=> 'required|numeric|min:0',
              'condicion_pago' => 'required',
                 
-
         ]);
-        //GENERACION AUTOMATICA DE NUMERO DE FACTURA
+
         $cliente = Cliente::findOrFail($request->cliente_id);
-        $condicionIva =$cliente->condicion_iva;
+        $condicionIva = $cliente->condicion_iva;
 
-        switch($condicionIva) {
-            case 'Responsable Inscripto':
-                $prefijo = 'A';
-                break;
+        // Determinar el prefijo
+        $prefijo = match ($condicionIva) {
+            'Responsable Inscripto' => 'A',
+            default => 'B',
+        };
 
-            case 'Monotributo':
-            case 'Exento':
-            case 'Consumidor Final':
-            default:
-                $prefijo = 'B';
-                break;
-        }
-
-
-        // Busca última factura del tipo (A o B)
+        // Generar número de factura
         $ultimo = Factura::where('numero_factura', 'like', $prefijo . '%')
             ->orderBy('id', 'desc')
             ->first();
 
         $ultimoNumero = $ultimo ? intval(substr($ultimo->numero_factura, 1)) : 0;
         $nuevoNumero = $ultimoNumero + 1;
-
         $numero = $prefijo . str_pad($nuevoNumero, 6, '0', STR_PAD_LEFT);
 
         
-        $descuento = $cliente->obtenerDescuentoPorMembresia();
-        $importeFinal = $request->importe_total * (1 - $descuento);
-        
         $ahora = Carbon::now();
+        
+        $descuento = 0.10;
+        
+        if($request->has('recurrente'))
+        {    
+            $importeFinal = round($request->importe_total * (1 - $descuento), 2);
 
-        $factura = Factura::create([
-            ...$request->all(),
+            $factura = Factura::create([
+            ...$request->except('recurrente'),
             'importe_total' => $importeFinal,
+            'importe_original' => $request->importe_total,         
             'numero_factura' => $numero,
             'fecha_emision' => $ahora->toDateTimeString(),
             'descuento_aplicado' => $descuento * 100,
-        ]);
+            'recurrente' => true,
+            ]);
+        }
+        else
+        {
+            $factura = Factura::create([
+                ...$request->except('recurrente'),       
+                'numero_factura' => $numero,
+                'fecha_emision' => $ahora->toDateTimeString(),
+                'descuento_aplicado' => $descuento * 100,
+                'recurrente' => false,
+            ]);
+
+        }
+
 
 
         $pdf = Pdf::loadView('facturas.pdf', compact('factura'));
-        $pdf->save(storage_path("app/public/factura_{$factura->id }.pdf"));
+        $pdf->save(storage_path("app/public/factura_{$factura->id}.pdf"));
 
-        $pdfData = $pdf->output();
-
-        Mail::to($factura->cliente->email)->send(new FacturaGenerada($factura, $pdfData));
+        Mail::to($factura->cliente->email)->send(new FacturaGenerada($factura, $pdf->output()));
 
         return redirect()->route('facturas.index')->with('success','Factura creada correctamente.');
-
-
     }
+
 
     /**
      * Display the specified resource.
@@ -240,15 +244,57 @@ class FacturaController extends Controller
     }
 
     public function enviarPorCorreo($id)
-{
-    $factura = Factura::with('cliente')->findOrFail($id);
+    {
+        $factura = Factura::with('cliente')->findOrFail($id);
 
-    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('facturas.pdf', compact('factura'));
-    $pdfData = $pdf->output();
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('facturas.pdf', compact('factura'));
+        $pdfData = $pdf->output();
 
-    \Illuminate\Support\Facades\Mail::to($factura->cliente->email)->send(new \App\Mail\FacturaGenerada($factura, $pdfData));
+        \Illuminate\Support\Facades\Mail::to($factura->cliente->email)->send(new \App\Mail\FacturaGenerada($factura, $pdfData));
 
-    return redirect()->back()->with('success', 'Factura enviada por correo.');
-}
+        return redirect()->back()->with('success', 'Factura enviada por correo.');
+    }
+
+
+    public function facturacionMensual(Request $request)
+    {
+        $cliente = $request->input('cliente');
+
+        $query = Factura::with(['cliente', 'pagos'])
+            ->where('recurrente', true)
+            ->when($cliente, function ($q) use ($cliente) {
+                $q->whereHas('cliente', function ($subQuery) use ($cliente) {
+                    $subQuery->where('razon_social', 'like', "%$cliente%");
+                });
+            })
+            ->orderBy('fecha_emision', 'desc');
+
+        // Obtener todas las facturas recurrentes
+        $facturas = $query->get();
+
+        // Agrupar por cliente_id + detalle
+        $agrupadas = $facturas->groupBy(function ($factura) {
+            return $factura->cliente_id . '|' . $factura->detalle;
+        })->map(function ($grupo) {
+            // De cada grupo, devolver solo la última factura (por ejemplo)
+            return $grupo->sortByDesc('fecha_emision')->first();
+        })->values(); // Reindexar la colección
+
+        // Paginar manualmente
+        $page = request()->get('page', 1);
+        $perPage = 5;
+        $paginated = new \Illuminate\Pagination\LengthAwarePaginator(
+            $agrupadas->forPage($page, $perPage),
+            $agrupadas->count(),
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+        return view('facturas.facturacion_mensual', [
+            'facturas' => $paginated
+        ]);
+    }
+
 
 }

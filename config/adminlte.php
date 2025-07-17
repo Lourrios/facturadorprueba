@@ -307,6 +307,7 @@ return [
     */
 
     'menu' => [
+
         // Navbar items:
         [
             'type' => 'navbar-search',
@@ -318,90 +319,121 @@ return [
             'topnav_right' => true,
         ],
 
-        // Sidebar items:
+        // Sidebar search
         [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
-            
+            'topnav_right' => true,
         ],
-       
+
+        // Inicio
         [
-          /*  'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
-        */],
-          [
             'text' => 'INICIO',
             'url' => 'home',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        ['header' => 'Administrar roles'],
-        [
-            'text' => 'Roles',
-            'url'  => 'roles',
-            'icon' => 'fas fa-users-cog', // Icono de gestión de roles
-        ],
-        [
-            'text' => 'Asignar roles',
-            'url'  => 'usuarios',
-            'icon' => 'fas fa-user-tag', // Icono de asignar rol a usuario
-            'can'  => 'ver-usuarios',
+            'icon' => 'fas fa-fw fa-home',
+
         ],
 
+        // Roles y Usuarios
         [
-            'header' => 'Administrar usuarios',
-        ],
-        [
-            'text' => 'Alta Usuarios',
-            'url'  => 'usuarios/create',
-            'icon' => 'fas fa-user-plus', // Alta de usuario
-            'can'  => 'crear-usuarios',
+            'text' => 'Administración',
+            'icon' => 'fas fa-users-cog',
+            'can' => 'ver-roles',
+            'submenu' => [
+                [
+                    'text' => 'Roles',
+                    'url'  => 'roles',
+                    'icon' => 'fas fa-user-shield',
+                    'can' => 'ver-roles',
+                ],
+                [
+                    'text' => 'Asignar roles',
+                    'url'  => 'usuarios',
+                    'icon' => 'fas fa-user-tag',
+                    'can'  => 'ver-usuarios',
+                ],
+                [
+                    'text' => 'Alta Usuarios',
+                    'url'  => 'usuarios/create',
+                    'icon' => 'fas fa-user-plus',
+                    'can'  => 'crear-usuarios',
+                ],
+            ],
+
         ],
 
+        // Clientes
         [
-            'header' => 'Panel de clientes',
-        ],
-        [
-            'text' => 'Listado Clientes',
-            'url'  => 'clientes',
-            'icon' => 'fas fa-users', // Lista de clientes
-        ],
-        [
-            'text' => 'Alta Clientes',
-            'url'  => 'clientes/create',
-            'icon' => 'fas fa-user-plus', // Alta cliente
+            'text' => 'Clientes',
+            'icon' => 'fas fa-users',
+            'can' => 'ver-clientes',
+            'submenu' => [
+                [
+                    'text' => 'Listado Clientes',
+                    'url'  => 'clientes',
+                    'icon' => 'fas fa-list',
+                    'can' => 'ver-clientes',
+                ],
+                [
+                    'text' => 'Alta Clientes',
+                    'url'  => 'clientes/create',
+                    'icon' => 'fas fa-user-plus',
+                    'can' => 'crear-clientes',
+                ],
+            ],
+
         ],
 
+        // Facturas
         [
-            'header' => 'Panel de Facturas',
-        ],
-        [
-            'text' => 'Listado de factura',
-            'url'  => 'facturas',
-            'icon' => 'fas fa-file-invoice', // Listado de facturas
-        ],
-        [
-            'text' => 'Alta factura',
-            'url'  => 'facturas/create',
-            'icon' => 'fas fa-file-invoice-dollar', // Alta factura
+            'text' => 'Facturación',
+            'icon' => 'fas fa-file-invoice-dollar',
+            'can' => 'ver-facturas',
+            'submenu' => [
+                [
+                    'text' => 'Listado de Facturas',
+                    'url'  => 'facturas',
+                    'icon' => 'fas fa-file-invoice',
+                    'can' => 'ver-facturas',
+                ],
+                [
+                    'text' => 'Alta Factura',
+                    'url'  => 'facturas/create',
+                    'icon' => 'fas fa-plus-circle',
+                    'can' => 'crear-facturas',
+                ],
+                [
+                    'text' => 'Facturacion Mensual',
+                    'url'  => 'facturas/facturacion-mensual',
+                    'icon' => 'fas fa-file-invoice',
+                    'can' => 'ver-facturas',
+                ]
+            ],
+
         ],
 
-        [
-            'header' => 'Panel de Pagos',
-        ],
+        // Pagos
         [
             'text' => 'Pagos',
-            'url'  => 'pagos',
-            'icon' => 'fas fa-credit-card', // Lista de pagos
+            'icon' => 'fas fa-money-check-alt',
+            'can' => 'ver-pago',
+            'submenu' => [
+                [
+                    'text' => 'Listado de Pagos',
+                    'url'  => 'pagos',
+                    'icon' => 'fas fa-credit-card',
+                    'can' => 'ver-pago',
+                ],
+                [
+                    'text' => 'Ingresar Pago',
+                    'url'  => 'pagos/create',
+                    'icon' => 'fas fa-cash-register',
+                    'can' => 'crear-pago',
+                ],
+            ],
+
         ],
         [
-            'text' => 'Ingresar Pago',
-            'url'  => 'pagos/create',
-            'icon' => 'fas fa-money-check-alt', // Ingresar pago
-        ],
-         [
             'header' => 'Panel de Notas',
         ],
         [
@@ -421,13 +453,15 @@ return [
             'text' => 'Reportes mensuales',
             'url'  => 'reportes/mensual',
             'icon' => 'fas fa-file-invoice', // Listado de facturas
-        ],
+         ],
+    ],
+
 
        /* [
             'text' => 'change_password',
             'url' => 'admin/settings',
             'icon' => 'fas fa-fw fa-lock',
-        */],
+        ],*/
         /*[
             'text' => 'multilevel',
             'icon' => 'fas fa-fw fa-share',

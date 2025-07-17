@@ -20,6 +20,9 @@ class Factura extends Model
         'fecha_emision',
         'condicion_pago',
         'descuento_aplicado',
+        'recurrente',
+        'importe_original',
+
     ];
   
     public function pagos(): HasMany

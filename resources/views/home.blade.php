@@ -13,15 +13,13 @@
         use App\Models\Pago;
         use Spatie\Permission\Models\Role;
 
-        $cant_usuarios = User::count();
-        $cant_roles = Role::count();
-        $cant_clientes = Cliente::count();
-        $cant_facturas = Factura::count();
-        $cant_pagos = Pago::count();
-    @endphp
-
-@section('content')
-
+    $cant_usuarios = User::count();
+    $cant_roles = Role::count();
+    $cant_clientes = Cliente::count();
+    $cant_facturas = Factura::count();
+    $cant_pagos = Pago::count();
+@endphp
+ @section('content')
     <div class="section-body">
 
         <div class="row">

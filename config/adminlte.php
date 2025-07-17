@@ -69,7 +69,7 @@ return [
     //'logo_img_xl' => null,
     //'logo_img_xl_class' => 'brand-image-xs',
     //'logo_img_alt' => 'Admin Logo',
-    'logo' => '<span style="color:#007bff; font-weight:bold;">Vida Digital</span>',
+'logo' => '<span style="font-family:Titillium Web, sans-serif; font-weight:700; letter-spacing:1px; color:#007bff;">VIDA DIGITAL</span>',
     'logo_img' => null,
     'logo_img_class' => '',
     'logo_img_alt' => '',
@@ -201,8 +201,9 @@ return [
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-light-info elevation-4',
+    'classes_sidebar' => 'sidebar-light-primary elevation-1',
 
+    //'classes_sidebar' => 'sidebar-light-info elevation-4',
    //'classes_sidebar' => 'sidebar-dark-primary elevation-4',
     'classes_sidebar_nav' => '',
     'classes_topnav' => 'navbar-ligh-info navbar-light',
@@ -290,7 +291,7 @@ return [
     */
 
     'laravel_asset_bundling' => false,
-    'laravel_css_path' => 'public\css\admin_custom.css',
+    'laravel_css_path' => 'css/admin_custom.css',
     'laravel_js_path' => 'js/app.js',
 
     /*
@@ -330,6 +331,7 @@ return [
             'text' => 'INICIO',
             'url' => 'home',
             'icon' => 'fas fa-fw fa-home',
+
         ],
 
         // Roles y Usuarios
@@ -357,6 +359,7 @@ return [
                     'can'  => 'crear-usuarios',
                 ],
             ],
+
         ],
 
         // Clientes
@@ -378,6 +381,7 @@ return [
                     'can' => 'crear-clientes',
                 ],
             ],
+
         ],
 
         // Facturas
@@ -405,6 +409,7 @@ return [
                     'can' => 'ver-facturas',
                 ]
             ],
+
         ],
 
         // Pagos
@@ -426,7 +431,29 @@ return [
                     'can' => 'crear-pago',
                 ],
             ],
+
         ],
+        [
+            'header' => 'Panel de Notas',
+        ],
+        [
+            'text' => 'Notas generadas',
+            'url'  => 'notas/index',
+            'icon' => 'fas fa-file-invoice', // Listado de facturas
+        ],
+          [
+            'header' => 'Reportes',
+        ],
+        [
+            'text' => 'Reportes anuales',
+            'url'  => 'reportes/index',
+            'icon' => 'fas fa-file-invoice', // Listado de facturas
+        ],
+         [
+            'text' => 'Reportes mensuales',
+            'url'  => 'reportes/mensual',
+            'icon' => 'fas fa-file-invoice', // Listado de facturas
+         ],
     ],
 
 

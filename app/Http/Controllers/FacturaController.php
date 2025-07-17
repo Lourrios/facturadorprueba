@@ -110,12 +110,13 @@ class FacturaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'cliente_id' => 'required|exists:clientes,id',
-            'fecha_desde' => 'required|date',
-            'fecha_hasta' => 'required|date|after_or_equal:fecha_desde',
-            'detalle' => 'required',
-            'importe_total'=> 'required|numeric|min:0',
-            'condicion_pago' => 'required',
+             'cliente_id' => 'required|exists:clientes,id',
+             'fecha_desde' => 'required|date',
+             'fecha_hasta' => 'required|date|after_or_equal:fecha_desde',
+             'detalle' => 'required',
+             'importe_total'=> 'required|numeric|min:0',
+             'condicion_pago' => 'required',
+                
         ]);
 
         $cliente = Cliente::findOrFail($request->cliente_id);

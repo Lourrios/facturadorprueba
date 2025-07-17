@@ -54,6 +54,12 @@
 .f-right {
     float: right;
 }
+
+.navbar-search-block input.form-control,
+.sidebar-menu-search input.form-control {
+    color: #000 !important;
+}
+
 /* === Personalización AdminLTE - Estilos adicionales === */
 
 /* Fondo general celeste claro */
@@ -82,4 +88,15 @@ body {
 /* Quitar sombra de elementos innecesarios si querés algo más plano */
 .sidebar-light-info .nav-sidebar > .nav-item > .nav-link.active {
     box-shadow: none !important;
+}
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap');
+
+body,
+[class*="content"],
+[class*="brand-text"],
+[class*="navbar"],
+[class*="sidebar"],
+[class*="main-sidebar"],
+[class*="main-header"] {
+    font-family: 'Titillium Web', sans-serif !important;
 }

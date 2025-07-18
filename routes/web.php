@@ -41,6 +41,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::group(['middleware'=>['auth']],function(){
     Route::get('/facturas/facturacion-mensual', [FacturaController::class, 'facturacionMensual'])
         ->name('facturas.facturacion-mensual');
+    Route::post('/facturas/{id}/dar-baja-mensualidad', [FacturaController::class, 'darBajaMensualidad'])
+        ->name('facturas.dar-baja-mensualidad');
 
     Route::resource('roles', RolController::class);
     Route::resource('usuarios', UsuarioController::class);

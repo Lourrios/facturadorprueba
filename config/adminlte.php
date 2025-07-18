@@ -434,26 +434,36 @@ return [
 
         ],
         [
-            'header' => 'Panel de Notas',
+            'text' => 'Notas',
+            'icon' => 'fas fa-file-invoice',
+            'can' => 'ver-facturas',
+            'submenu' => [
+                [
+                    'text' => 'Notas generadas',
+                    'url'  => 'notas/index',
+                    'icon' => 'fas fa-file-invoice', // Listado de facturas
+                ],
+            ],
         ],
+
         [
-            'text' => 'Notas generadas',
-            'url'  => 'notas/index',
-            'icon' => 'fas fa-file-invoice', // Listado de facturas
+            'text' => 'Reportes',
+            'icon' => 'fas fa-file-invoice',
+            'can' => 'ver-facturas',
+            'submenu' => [
+                [
+                    'text' => 'Reportes anuales',
+                    'url'  => 'reportes/index',
+                    'icon' => 'fas fa-file-invoice', // Listado de facturas
+                ],
+                [
+                    'text' => 'Reportes mensuales',
+                    'url'  => 'reportes/mensual',
+                    'icon' => 'fas fa-file-invoice', // Listado de facturas
+                ],
+            ],
         ],
-          [
-            'header' => 'Reportes',
-        ],
-        [
-            'text' => 'Reportes anuales',
-            'url'  => 'reportes/index',
-            'icon' => 'fas fa-file-invoice', // Listado de facturas
-        ],
-         [
-            'text' => 'Reportes mensuales',
-            'url'  => 'reportes/mensual',
-            'icon' => 'fas fa-file-invoice', // Listado de facturas
-         ],
+    
     ],
 
 

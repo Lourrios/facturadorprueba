@@ -32,7 +32,7 @@ class FacturaController extends Controller
         $cliente = $request->input('cliente');
         $estado = $request->input('estado');
         $fecha = $request->input('fecha');
-
+        $detalle = $request->input('detalle');
 
         $query = Factura::with(['cliente', 'pagos'])
 
@@ -43,6 +43,9 @@ class FacturaController extends Controller
         })
         ->when($fecha, function ($q) use ($fecha) {
             $q->whereDate('fecha_emision', $fecha);
+        })
+        ->when($detalle, function ($q) use ($detalle) {
+            $q->where('detalle', 'like', "%$detalle%");
         })
         ->orderBy('fecha_emision', 'desc');;
 
@@ -261,7 +264,9 @@ class FacturaController extends Controller
         $cliente = $request->input('cliente');
 
         $query = Factura::with(['cliente', 'pagos'])
+            ->where('activo', true)
             ->where('recurrente', true)
+            ->whereNotNull('detalle')
             ->when($cliente, function ($q) use ($cliente) {
                 $q->whereHas('cliente', function ($subQuery) use ($cliente) {
                     $subQuery->where('razon_social', 'like', "%$cliente%");
@@ -269,18 +274,14 @@ class FacturaController extends Controller
             })
             ->orderBy('fecha_emision', 'desc');
 
-        // Obtener todas las facturas recurrentes
         $facturas = $query->get();
 
-        // Agrupar por cliente_id + detalle
         $agrupadas = $facturas->groupBy(function ($factura) {
             return $factura->cliente_id . '|' . $factura->detalle;
         })->map(function ($grupo) {
-            // De cada grupo, devolver solo la última factura (por ejemplo)
             return $grupo->sortByDesc('fecha_emision')->first();
-        })->values(); // Reindexar la colección
+        })->values();
 
-        // Paginar manualmente
         $page = request()->get('page', 1);
         $perPage = 5;
         $paginated = new \Illuminate\Pagination\LengthAwarePaginator(
@@ -295,6 +296,21 @@ class FacturaController extends Controller
             'facturas' => $paginated
         ]);
     }
+
+
+   public function darBajaMensualidad($id)
+    {
+        $factura = Factura::findOrFail($id);
+
+        // Obtener todas las facturas del mismo grupo (cliente + detalle)
+        Factura::where('cliente_id', $factura->cliente_id)
+            ->where('detalle', $factura->detalle)
+            ->where('recurrente', true)
+            ->update(['recurrente' => false]);
+
+        return redirect()->route('facturas.facturacion-mensual')->with('success', 'La mensualidad se dio de baja correctamente.');
+    }
+
 
 
 }

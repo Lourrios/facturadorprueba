@@ -62,13 +62,18 @@
             <td>{{ $impagas }}</td>
             <td>{{ $antiguedad }} meses</td>
             <td>
-                <a href="{{ route('facturas.show', $factura->id) }}" class="btn btn-primary btn-sm">Ver factura</a>
+                <form action="{{ route('facturas.index') }}" method="GET" class="d-inline">
+                    <input type="hidden" name="cliente" value="{{ $factura->cliente->razon_social }}">
+                    <input type="hidden" name="detalle" value="{{ $factura->detalle }}">
+                    <button type="submit" class="btn btn-primary btn-sm">Ver facturas</button>
+                </form>
 
-                @can('crear-pagos')
-                    @if ($totalPagado < $factura->importe_total && $factura->activo === 1)
-                        <a href="{{ route('pagos.create.from.factura', $factura->id) }}" class="btn btn-success btn-sm">Pagar</a>
-                    @endif
-                @endcan
+                @if ($factura->recurrente)
+                    <form class="d-inline" action="{{ route('facturas.dar-baja-mensualidad', $factura->id) }}" method="POST" onsubmit="return confirm('¿Esta seguro que desea dar de baja la mensualidad?')">
+                        @csrf
+                        <button class="btn btn-danger btn-sm">Dar de Baja</button>
+                    </form>
+                @endif
             </td>
         </tr>
     @endforeach

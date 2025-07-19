@@ -157,4 +157,13 @@ class FacturaService
             ->count();
     }
 
+    public function estaActivaLaRecurrente(Factura $factura): bool
+    {
+        return Factura::where('cliente_id', $factura->cliente_id)
+            ->where('detalle', $factura->detalle)
+            ->where('recurrente', true)
+            ->exists();
+    }
+
+
 }

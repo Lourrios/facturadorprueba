@@ -147,12 +147,20 @@
         <thead>
             <tr>
                 <th>Detalle del Servicio</th>
+                @if($factura->descuento_aplicado)
+                    <th>Importe s/bonificacion</th>
+                    <th>Descuento</th>
+                @endif
                 <th>Importe</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>{{ $factura->detalle }}</td>
+                @if($factura->descuento_aplicado)
+                    <td>$ {{ $factura->importe_original }}</td>
+                    <td>{{ $factura->descuento_aplicado }}%</td>
+                    @endif
                 <td>$ {{ number_format($factura->importe_total, 2, ',', '.') }}</td>
             </tr>
         </tbody>

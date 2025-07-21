@@ -143,10 +143,11 @@ class FacturaController extends Controller
         
         $ahora = Carbon::now();
         
-        $descuento = 0.10;
+    
         
         if($request->has('recurrente'))
         {    
+            $descuento = 0.10;
             $importeFinal = round($request->importe_total * (1 - $descuento), 2);
 
             $factura = Factura::create([
@@ -165,7 +166,6 @@ class FacturaController extends Controller
                 ...$request->except('recurrente'),       
                 'numero_factura' => $numero,
                 'fecha_emision' => $ahora->toDateTimeString(),
-                'descuento_aplicado' => $descuento * 100,
                 'recurrente' => false,
             ]);
 
@@ -298,7 +298,7 @@ class FacturaController extends Controller
     }
 
 
-   public function darBajaMensualidad($id)
+    public function darBajaMensualidad($id)
     {
         $factura = Factura::findOrFail($id);
 
@@ -310,6 +310,21 @@ class FacturaController extends Controller
 
         return redirect()->route('facturas.facturacion-mensual')->with('success', 'La mensualidad se dio de baja correctamente.');
     }
+
+    public function verFacturasRecurrentes($cliente_id, $detalle)
+    {
+        $detalle = urldecode($detalle);
+
+        $facturas = Factura::with('pagos', 'cliente')
+            ->where('cliente_id', $cliente_id)
+            ->where('detalle', $detalle)
+            ->orderBy('fecha_emision', 'desc')
+            ->get();
+
+        return view('facturas.facturas_recurrentes', compact('facturas'));
+    }
+
+
 
 
 

@@ -62,11 +62,10 @@
             <td>{{ $impagas }}</td>
             <td>{{ $antiguedad }} meses</td>
             <td>
-                <form action="{{ route('facturas.index') }}" method="GET" class="d-inline">
-                    <input type="hidden" name="cliente" value="{{ $factura->cliente->razon_social }}">
-                    <input type="hidden" name="detalle" value="{{ $factura->detalle }}">
-                    <button type="submit" class="btn btn-primary btn-sm">Ver facturas</button>
-                </form>
+                <a href="{{ route('facturas.recurrentes', ['cliente_id' => $factura->cliente_id, 'detalle' => urlencode($factura->detalle)]) }}"
+                class="btn btn-primary btn-sm">
+                    Ver facturas
+                </a>
 
                 @if ($factura->recurrente)
                     <form class="d-inline" action="{{ route('facturas.dar-baja-mensualidad', $factura->id) }}" method="POST" onsubmit="return confirm('¿Esta seguro que desea dar de baja la mensualidad?')">

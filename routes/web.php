@@ -43,6 +43,9 @@ Route::group(['middleware'=>['auth']],function(){
         ->name('facturas.facturacion-mensual');
     Route::post('/facturas/{id}/dar-baja-mensualidad', [FacturaController::class, 'darBajaMensualidad'])
         ->name('facturas.dar-baja-mensualidad');
+    Route::get('/facturas/recurrentes/{cliente_id}/{detalle}', [FacturaController::class, 'verFacturasRecurrentes'])
+        ->name('facturas.recurrentes');
+
 
     Route::resource('roles', RolController::class);
     Route::resource('usuarios', UsuarioController::class);

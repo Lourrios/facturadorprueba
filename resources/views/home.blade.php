@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Home-Vida Digital')
 
     @section('content_header')
         <h1>Bienvenidos!</h1>
@@ -12,12 +12,16 @@
         use App\Models\Factura;
         use App\Models\Pago;
         use Spatie\Permission\Models\Role;
+        use App\Models\Nota;
 
     $cant_usuarios = User::count();
     $cant_roles = Role::count();
     $cant_clientes = Cliente::count();
     $cant_facturas = Factura::count();
     $cant_pagos = Pago::count();
+    $cant_notas = Nota::count();
+    $cant_reportes = 1; 
+
 @endphp
  @section('content')
     <div class="section-body">
@@ -88,6 +92,33 @@
                 </div>
             </div>
             @endcan
+
+            @can('ver-notas')
+                {{-- Notas --}}
+                <div class="col-md-4 col-xl-4">
+                    <div class="card bg-c-purple order-card">
+                        <div class="card-block">
+                            <h5>Notas</h5>
+                            <h2 class="text-right"><i class="fa fa-sticky-note f-left"></i><span>{{ $cant_notas }}</span></h2>
+                            <p class="m-b-0 text-right"><a href="/notas/index" class="text-white">Ver más</a></p>
+                        </div>
+                    </div>
+                </div>
+                @endcan
+
+                @can('ver-reportes')
+                {{-- Reportes --}}
+                <div class="col-md-4 col-xl-4">
+                    <div class="card bg-c-lightblue order-card">
+                        <div class="card-block">
+                            <h5>Reportes</h5>
+                            <h2 class="text-right"><i class="fa fa-chart-line f-left"></i><span>{{ $cant_reportes }}</span></h2>
+                            <p class="m-b-0 text-right"><a href="/reportes/index" class="text-white">Ver más</a></p>
+                        </div>
+                    </div>
+                </div>
+                @endcan
+
 
         </div>
     </div>

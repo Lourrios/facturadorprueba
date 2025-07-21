@@ -55,6 +55,7 @@
         </div>
     </form>
 </div>
+<x-boton-volver />
 @stop
 
 @section('css')

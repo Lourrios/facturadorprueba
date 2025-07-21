@@ -77,7 +77,7 @@
     </form>
 
 
-
+<x-boton-volver />
 
 @stop
 

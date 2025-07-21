@@ -53,6 +53,8 @@
         <a href="{{ route('pagos.index') }}" class="btn btn-secondary">Cancelar</a>
 
     </form>
+
+    <x-boton-volver />
 @stop
 
 @section('css')

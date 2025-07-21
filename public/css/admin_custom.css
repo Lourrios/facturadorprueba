@@ -29,6 +29,21 @@
     color: #fff;
 }
 
+.bg-c-purple {
+    background: linear-gradient(45deg, #d4b0ff, #8e2de2);
+    color: #fff;
+}
+
+.bg-c-pinklight {
+    background: linear-gradient(45deg, #ffd1dc, #ff80ab);
+    color: #000;
+}
+
+.bg-c-lightblue {
+    background: linear-gradient(45deg, #b2ebf2, #00bcd4);
+    color: #000;
+}
+
 
 .card {    
     -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);

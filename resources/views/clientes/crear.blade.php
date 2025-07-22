@@ -62,7 +62,7 @@
     <button type="submit" class="btn btn-primary">Guardar</button>
     <a href="{{ route('clientes.index') }}" class="btn btn-secondary">Cancelar</a>
 </form>
-
+<x-boton-volver />
 @stop
 
 @section('css')

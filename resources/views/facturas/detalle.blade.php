@@ -31,6 +31,13 @@
                     <p><strong>Importe Total:</strong> ${{ number_format($factura->importe_total, 2, ',', '.') }}</p>
                     <p><strong>Fecha de Emisión:</strong> {{ date('d/m/Y H:i', strtotime($factura->fecha_emision)) }}</p>
                     <p><strong>Detalle del servicio:</strong> {{ $factura->detalle }}</p>
+                    <p><strong>Bonificación:</strong> 
+                       @if($factura->recurrente && $factura->descuento_aplicado > 0)
+                            {{ $factura->descuento_aplicado }}%
+                        @else
+                            No aplica
+                        @endif
+                    </p>
                     <p><strong>Estado:</strong>
                         @php $estado = $factura->estado(); @endphp
                         @if ($estado == 'Pendiente')
@@ -104,7 +111,7 @@
     </div>
 </div>
 
-
+<x-boton-volver />
 @stop
 
 

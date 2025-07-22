@@ -51,6 +51,7 @@
             <th>Cliente</th>
             <th>Importe Adeudado</th>
             <th>Periodo</th>
+              <th>Bonificacion</th>
              <th>Estado</th>
             <th>Acciones</th>
         </tr>
@@ -66,7 +67,13 @@
             <td>${{ number_format($factura->importe_total - $totalPagado, 2, ',', '.') }}</td>
             <td>{{ $factura->fecha_desde }} - {{ $factura->fecha_hasta }}</td>
            <td>
-
+                @if($factura->recurrente && $factura->descuento_aplicado >0)
+                    {{$factura->descuento_aplicado}}%
+                @else
+                    -
+                @endif
+            </td>
+            <td>
                 @if($factura->activo === 0)  
                     <span class="badge badge-danger">Cancelada</span>
                 @elseif($totalPagado >= $factura->importe_total)

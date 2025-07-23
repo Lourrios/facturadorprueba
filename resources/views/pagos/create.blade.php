@@ -5,6 +5,7 @@
 
 @section('content_header')
     <h1>Registrar Pago</h1>
+    <x-boton-volver />
 @stop
 
 @section('content')
@@ -53,7 +54,7 @@
     <button type="submit" class="btn btn-primary">Guardar</button>
     <a href="{{ route('pagos.index') }}" class="btn btn-secondary">Cancelar</a>
 </form>
-<x-boton-volver />
+
 @stop
 
 @section('css')

@@ -3,11 +3,17 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
+
     <h1>Alta de usuarios</h1>
+
+    
+    <x-boton-volver />
 @stop
 
+
 @section('content')
-    
+
+
     @if ($errors->any())                                                
                     <div class="alert alert-dark alert-dismissible fade show" role="alert">
                     <strong>¡Revise los campos!</strong>                        
@@ -21,7 +27,7 @@
     @endif
 
 
-    <form action="{{ route('usuarios.store') }}" method="POST">
+    <form action="{{ route('usuarios.store') }}" method="POST" class="mt-2">
         @csrf
 
         <div class="row">
@@ -77,7 +83,7 @@
     </form>
 
 
-<x-boton-volver />
+
 
 @stop
 

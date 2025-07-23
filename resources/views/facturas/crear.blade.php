@@ -4,6 +4,7 @@
 
 @section('content_header')
     <h1>Registrar Factura</h1>
+    <x-boton-volver />
 @stop
 
 @section('content')
@@ -71,7 +72,7 @@
     
 </form>
 
-<x-boton-volver />
+
 
 
 @stop

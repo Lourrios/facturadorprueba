@@ -21,7 +21,7 @@ use Carbon\Carbon;
 <body>
     <div class="container">
         <div class="header">
-            <h2>NOTA DE {{ strtoupper($nota->tipo) }} - COMPROBANTE "A"</h2>
+            <h2>NOTA DE {{ strtoupper($nota->tipo) }} </h2>
             <p><strong>Nº:</strong> {{ str_pad($nota->id, 8, '0', STR_PAD_LEFT) }}</p>
             <p><strong>Fecha:</strong> {{ Carbon::parse($nota->created_at)->format('d/m/Y') }}</p>
         </div>
@@ -61,7 +61,7 @@ use Carbon\Carbon;
         </div>
 
         <div class="footer">
-            <p>Original: Blanco &nbsp;&nbsp; Duplicado: Color</p>
+            
         </div>
     </div>
 </body>

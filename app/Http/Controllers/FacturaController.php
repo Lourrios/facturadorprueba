@@ -114,7 +114,7 @@ class FacturaController extends Controller
     {
         $request->validate([
              'cliente_id' => 'required|exists:clientes,id',
-             'fecha_desde' => 'required|date',
+             'fecha_desde' => 'required|date|after_or_equal:now',
              'fecha_hasta' => 'required|date|after_or_equal:fecha_desde',
              'detalle' => 'required',
              'importe_total'=> 'required|numeric|min:0',
@@ -210,7 +210,7 @@ class FacturaController extends Controller
     {
         $request->validate([
              'cliente_id' => 'required|exists:clientes,id', 
-             'fecha_desde' => 'required|date',
+             'fecha_desde' => 'required|date|after_or_equal:now',
              'fecha_hasta' => 'required|date|after_or_equal:fecha_desde',
              'detalle' => 'required',
              'importe_total'=> 'required|numeric|min:0',

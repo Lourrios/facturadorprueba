@@ -110,15 +110,19 @@ class ReporteController extends Controller
 
     public function exportarReporteMensual(Request $request)
         {
-            $request->validate([
+            /*$request->validate([
                 'cliente_id' => 'required|exists:clientes,id',
                 'mes' => 'required|integer|min:1|max:12',
                 'anio' => 'required|integer|min:2000',
-            ]);
+            ]); */
 
             $clienteId = $request->cliente_id;
             $mes = $request->mes;
             $anio = $request->anio;
+            
+            // TEMPORALMENTE para debug
+\Log::info("Exportando Excel: cliente_id=$clienteId, mes=$mes, anio=$anio");
+
 
             return \Maatwebsite\Excel\Facades\Excel::download(
                 new ReporteMensualExport($clienteId, $mes, $anio),

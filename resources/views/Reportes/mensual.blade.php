@@ -30,13 +30,17 @@
         </div>
         <div class="col-md-4 d-flex align-items-end">
             <button type="submit" class="btn btn-primary me-2">Buscar</button>
-
+  </form>
             @if($facturas->count() && $clienteId)
-                <a href="{{ route('reportes.mensual.exportar', ['cliente_id'=>$clienteId, 'mes'=>$mes, 'anio'=>$anio]) }}"
-                   class="btn btn-success">Exportar Excel</a>
+              <form method="GET" action="{{ route('reportes.mensual.exportar') }}">
+             <input type="hidden" name="cliente_id" value="{{ $clienteId }}">
+                <input type="hidden" name="mes" value="{{ $mes }}">
+                <input type="hidden" name="anio" value="{{ $anio }}">
+                <button type="submit" class="btn btn-success">Exportar Excel</button>
+                </form>
             @endif
         </div>
-    </form>
+  
 
     @if($facturas->count())
         @if($clienteId)

@@ -9,7 +9,7 @@
 @section('content')
 <div class="card p-4 shadow w-75 mx-auto">
     <div class="text-center mb-4">
-        <h4><strong>NOTA DE {{ strtoupper($nota->tipo) }} A</strong></h4>
+        <h4><strong>NOTA DE {{ strtoupper($nota->tipo) }} </strong></h4>
         <p><strong>N°:</strong> {{ $nota->id }}</p>
         <p><strong>Fecha:</strong> {{ $nota->created_at->format('d/m/Y') }}</p>
     </div>

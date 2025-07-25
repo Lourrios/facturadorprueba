@@ -6,8 +6,12 @@ use App\Models\Cliente;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Events\AfterSheet;
 
-class ReportesExport implements FromCollection, WithHeadings
+class ReportesExport implements FromCollection, WithHeadings, WithStyles, WithEvents
 {
     protected $anio;
 
@@ -50,6 +54,39 @@ class ReportesExport implements FromCollection, WithHeadings
          return [
             'Cliente', 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
             'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+        ];
+    }
+
+        // 👉 Negrita para encabezados (fila 1) y primera columna
+    public function styles(Worksheet $sheet)
+    {
+        $lastRow = $sheet->getHighestRow();
+
+        return [
+            1 => ['font' => ['bold' => true]], // Encabezado fila 1
+            'A2:A' . $lastRow => ['font' => ['bold' => true]], // Clientes columna A
+        ];
+    }
+
+    // 👉 Bordes finos a toda la tabla
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                $sheet = $event->sheet->getDelegate();
+                $highestRow = $sheet->getHighestRow();
+                $highestCol = $sheet->getHighestColumn();
+
+                $range = 'A1:' . $highestCol . $highestRow;
+
+                $sheet->getStyle($range)->applyFromArray([
+                    'borders' => [
+                        'allBorders' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        ],
+                    ],
+                ]);
+            },
         ];
     }
 }

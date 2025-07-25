@@ -2,15 +2,14 @@
 
 namespace App\Exports;
 
-use App\Models\Factura;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use App\Models\Factura;
 
 class ReporteMensualExport implements FromCollection, WithHeadings
 {
-    protected $clienteId;
-    protected $mes;
-    protected $anio;
+    protected $clienteId, $mes, $anio;
 
     public function __construct($clienteId, $mes, $anio)
     {
@@ -21,7 +20,7 @@ class ReporteMensualExport implements FromCollection, WithHeadings
 
     public function collection()
     {
-        $facturas = Factura::with(['pagos', 'cliente'])
+        $facturas = Factura::with('pagos')
             ->where('cliente_id', $this->clienteId)
             ->whereYear('fecha_emision', $this->anio)
             ->whereMonth('fecha_emision', $this->mes)
@@ -32,13 +31,12 @@ class ReporteMensualExport implements FromCollection, WithHeadings
             $saldo = $f->importe_total - $pagado;
 
             return [
-                'Número' => $f->numero_factura,
-                'Fecha de Emisión' => $f->fecha_emision,
-                'Detalle' => $f->detalle,
-                'Importe Total' => number_format($f->importe_total, 2, ',', '.'),
-                'Pagado' => number_format($pagado, 2, ',', '.'),
-                'Saldo' => number_format($saldo, 2, ',', '.'),
-                'Estado' => $f->estado(),
+                $f->numero_factura,
+                optional($f->fecha_emision)->format('d/m/Y'),
+                $f->detalle,
+                number_format((float) $f->importe_total, 2, ',', '.'),
+                number_format((float) $pagado, 2, ',', '.'),
+                number_format((float) $saldo, 2, ',', '.'),
             ];
         });
     }
@@ -46,13 +44,12 @@ class ReporteMensualExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'Número',
+            'N° Factura',
             'Fecha de Emisión',
             'Detalle',
             'Importe Total',
             'Pagado',
             'Saldo',
-            'Estado',
         ];
     }
 }

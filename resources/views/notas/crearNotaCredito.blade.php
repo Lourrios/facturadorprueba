@@ -15,7 +15,7 @@
 
         {{-- Encabezado estilo AFIP --}}
         <div class="text-center mb-4">
-            <h4><strong>NOTA DE CRÉDITO A</strong></h4>
+            <h4><strong>NOTA DE CRÉDITO </strong></h4>
             {{--<p><strong>N°:</strong> Automático</p>--}}
             <p><strong>Fecha:</strong> {{ now()->format('d/m/Y') }}</p>
         </div>

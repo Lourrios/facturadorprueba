@@ -14,6 +14,36 @@
 .bg-c-pink {
     background: linear-gradient(45deg,#ff869a, #FF5370);
 }
+.bg-c-yellow {
+    background: linear-gradient(45deg, #ffe57f, #ffca28);
+    color: #000;
+ }
+
+.bg-c-red {
+    background: linear-gradient(45deg, #ff9a9e, #f6416c);
+    color: #fff;
+}
+
+.bg-c-brown {
+    background: linear-gradient(45deg, #d2b48c, #a0522d);
+    color: #fff;
+}
+
+.bg-c-purple {
+    background: linear-gradient(45deg, #d4b0ff, #8e2de2);
+    color: #fff;
+}
+
+.bg-c-pinklight {
+    background: linear-gradient(45deg, #ffd1dc, #ff80ab);
+    color: #000;
+}
+
+.bg-c-lightblue {
+    background: linear-gradient(45deg, #b2ebf2, #00bcd4);
+    color: #000;
+}
+
 
 .card {    
     -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
@@ -38,4 +68,50 @@
 
 .f-right {
     float: right;
+}
+
+.navbar-search-block input.form-control,
+.sidebar-menu-search input.form-control {
+    color: #000 !important;
+}
+
+/* === Personalización AdminLTE - Estilos adicionales === */
+
+/* Fondo general celeste claro */
+body {
+    background-color: #e0f7fa !important;
+}
+
+/* Fondo de la barra lateral */
+.main-sidebar {
+    background-color: #e0f7fa !important;
+}
+
+/* Menú: letras negras */
+.nav-sidebar .nav-link {
+    color: #000 !important;
+    background-color: transparent !important;
+}
+
+/* Menú activo: blanco y negrita */
+.nav-sidebar .nav-link.active {
+    background-color: #ffffff !important;
+    color: #000 !important;
+    font-weight: bold;
+}
+
+/* Quitar sombra de elementos innecesarios si querés algo más plano */
+.sidebar-light-info .nav-sidebar > .nav-item > .nav-link.active {
+    box-shadow: none !important;
+}
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap');
+
+body,
+[class*="content"],
+[class*="brand-text"],
+[class*="navbar"],
+[class*="sidebar"],
+[class*="main-sidebar"],
+[class*="main-header"] {
+    font-family: 'Titillium Web', sans-serif !important;
 }

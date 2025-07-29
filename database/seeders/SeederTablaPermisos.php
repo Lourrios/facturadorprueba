@@ -22,9 +22,34 @@ class SeederTablaPermisos extends Seeder
             'ver-usuarios',
             'crear-usuarios',
             'editar-usuarios',
-            'borrar-usuarios'
+            'borrar-usuarios',
 
+
+            'ver-clientes',
+            'crear-clientes',
+            'editar-clientes',
+            'borrar-clientes',
+
+            'ver-facturas',
+            'crear-facturas',
+            'editar-facturas',
+            'borrar-facturas',
+
+            'descargar-facturas',   
+            'enviar-facturas',
+
+            'ver-pago',
+            'crear-pago',
+            'editar-pago',
+            'borrar-pago',
+
+            'generar-notas',
+            'crear-notas',
+            'ver-notas',
+
+            'ver-reportes'
         ];
+        
         foreach($permisos as $permiso){
           Permission::firstOrCreate(['name' => $permiso, 'guard_name' => 'web']);
         }

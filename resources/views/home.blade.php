@@ -1,61 +1,135 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Home-Vida Digital')
 
-@section('content_header')
-    <h1>Bienvenidos!</h1>
-@stop
+    @section('content_header')
+        <h1>Bienvenidos!</h1>
+    @stop
 
-@section('content')
+    @php
+        use App\Models\User;
+        use App\Models\Cliente;
+        use App\Models\Factura;
+        use App\Models\Pago;
+        use Spatie\Permission\Models\Role;
+        use App\Models\Nota;
 
-            
-        <div class="section-body">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">                          
-                                <div class="row">
-                                    <div class="col-md-4 col-xl-4">
-                                    
-                                    <div class="card bg-c-blue order-card">
-                                            <div class="card-block">
-                                            <h5>Usuarios</h5>                                               
-                                                @php
-                                                 use App\Models\User;
-                                                $cant_usuarios = User::count();                                                
-                                                @endphp
-                                                <h2 class="text-right"><i class="fa fa-users f-left"></i><span>{{$cant_usuarios}}</span></h2>
-                                                <p class="m-b-0 text-right"><a href="/usuarios" class="text-black">Ver más</a></p>
-                                            </div>                                            
-                                        </div>                                    
-                                    </div>
-                                    
-                                    <div class="col-md-4 col-xl-4">
-                                        <div class="card bg-c-green order-card">
-                                            <div class="card-block">
-                                            <h5>Roles</h5>                                               
-                                                @php
-                                                use Spatie\Permission\Models\Role;
-                                                 $cant_roles = Role::count();                                                
-                                                @endphp
-                                                <h2 class="text-right"><i class="fa fa-user-lock f-left"></i><span>{{$cant_roles}}</span></h2>
-                                                <p class="m-b-0 text-right"><a href="/roles" class="text-black">Ver más</a></p>
-                                            </div>
-                                        </div>
-                                    </div>                                                                
-                                    
-                                               
-                        </div>
+    $cant_usuarios = User::count();
+    $cant_roles = Role::count();
+    $cant_clientes = Cliente::count();
+    $cant_facturas = Factura::count();
+    $cant_pagos = Pago::count();
+    $cant_notas = Nota::count();
+    $cant_reportes = 1; 
+
+@endphp
+ @section('content')
+    <div class="section-body">
+
+        <div class="row">
+
+            @can('ver-usuarios')
+            {{-- Usuarios --}}
+            <div class="col-md-4 col-xl-4">
+                <div class="card bg-c-blue order-card">
+                    <div class="card-block">
+                        <h5>Usuarios</h5>
+                        <h2 class="text-right"><i class="fa fa-users f-left"></i><span>{{ $cant_usuarios }}</span></h2>
+                        <p class="m-b-0 text-right"><a href="/usuarios" class="text-white">Ver más</a></p>
                     </div>
                 </div>
             </div>
+            @endcan
+
+            @can('ver-roles')
+            {{-- Roles --}}
+            <div class="col-md-4 col-xl-4">
+                <div class="card bg-c-green order-card">
+                    <div class="card-block">
+                        <h5>Roles</h5>
+                        <h2 class="text-right"><i class="fa fa-user-lock f-left"></i><span>{{ $cant_roles }}</span></h2>
+                        <p class="m-b-0 text-right"><a href="/roles" class="text-white">Ver más</a></p>
+                    </div>
+                </div>
+            </div>
+            @endcan
+
+            @can('ver-clientes')
+            {{-- Clientes --}}
+            <div class="col-md-4 col-xl-4">
+                <div class="card bg-c-yellow order-card">
+                    <div class="card-block">
+                        <h5>Clientes</h5>
+                        <h2 class="text-right"><i class="fa fa-address-book f-left"></i><span>{{ $cant_clientes }}</span></h2>
+                        <p class="m-b-0 text-right"><a href="/clientes" class="text-white">Ver más</a></p>
+                    </div>
+                </div>
+            </div>
+            @endcan
+
+            @can('ver-facturas')
+            {{-- Facturas --}}
+            <div class="col-md-4 col-xl-4">
+                <div class="card bg-c-red order-card">
+                    <div class="card-block">
+                        <h5>Facturas</h5>
+                        <h2 class="text-right"><i class="fa fa-file-invoice-dollar f-left"></i><span>{{ $cant_facturas }}</span></h2>
+                        <p class="m-b-0 text-right"><a href="/facturas" class="text-white">Ver más</a></p>
+                    </div>
+                </div>
+            </div>
+            @endcan
+
+            @can('ver-pago')
+            {{-- Pagos --}}
+            <div class="col-md-4 col-xl-4">
+                <div class="card bg-c-brown order-card">
+                    <div class="card-block">
+                        <h5>Pagos</h5>
+                        <h2 class="text-right"><i class="fa fa-money-bill-wave f-left"></i><span>{{ $cant_pagos }}</span></h2>
+                        <p class="m-b-0 text-right"><a href="/pagos" class="text-white">Ver más</a></p>
+                    </div>
+                </div>
+            </div>
+            @endcan
+
+            @can('ver-notas')
+                {{-- Notas --}}
+                <div class="col-md-4 col-xl-4">
+                    <div class="card bg-c-purple order-card">
+                        <div class="card-block">
+                            <h5>Notas</h5>
+                            <h2 class="text-right"><i class="fa fa-sticky-note f-left"></i><span>{{ $cant_notas }}</span></h2>
+                            <p class="m-b-0 text-right"><a href="/notas/index" class="text-white">Ver más</a></p>
+                        </div>
+                    </div>
+                </div>
+                @endcan
+
+                @can('ver-reportes')
+                {{-- Reportes --}}
+                <div class="col-md-4 col-xl-4">
+                    <div class="card bg-c-lightblue order-card">
+                        <div class="card-block">
+                            <h5>Reportes</h5>
+                            <h2 class="text-right"><i class="fa fa-chart-line f-left"></i><span>{{ $cant_reportes }}</span></h2>
+                            <p class="m-b-0 text-right"><a href="/reportes/index" class="text-white">Ver más</a></p>
+                        </div>
+                    </div>
+                </div>
+                @endcan
+
+
         </div>
- 
+    </div>
+
 @stop
 
 @section('css')
+
     {{-- Add here extra stylesheets --}}
    <link rel="stylesheet" href="{{ asset('css/admin_custom.css') }}">
+@stop
 
 @section('js')
     <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>

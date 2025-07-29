@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Login/Register',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,12 +63,17 @@ return [
     |
     */
 
-    'logo' => '<b>Vida Digital</b>',
+   // 'logo' => '<b>Vida Digital</b>',
     //'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
    // 'logo_img_class' => 'brand-image img-circle elevation-3',
     //'logo_img_xl' => null,
     //'logo_img_xl_class' => 'brand-image-xs',
     //'logo_img_alt' => 'Admin Logo',
+'logo' => '<span style="font-family:Titillium Web, sans-serif; font-weight:700; letter-spacing:1px; color:#007bff;">VIDA DIGITAL</span>',
+    'logo_img' => null,
+    'logo_img_class' => '',
+    'logo_img_alt' => '',
+
 
     /*
     |--------------------------------------------------------------------------
@@ -196,8 +201,9 @@ return [
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-light-info elevation-4',
+    'classes_sidebar' => 'sidebar-light-primary elevation-1',
 
+    //'classes_sidebar' => 'sidebar-light-info elevation-4',
    //'classes_sidebar' => 'sidebar-dark-primary elevation-4',
     'classes_sidebar_nav' => '',
     'classes_topnav' => 'navbar-ligh-info navbar-light',
@@ -285,7 +291,7 @@ return [
     */
 
     'laravel_asset_bundling' => false,
-    'laravel_css_path' => 'css/app.css',
+    'laravel_css_path' => 'css/admin_custom.css',
     'laravel_js_path' => 'js/app.js',
 
     /*
@@ -301,76 +307,171 @@ return [
     */
 
     'menu' => [
+
         // Navbar items:
-        [
+       /* [
             'type' => 'navbar-search',
             'text' => 'search',
             'topnav_right' => true,
-        ],
+        ],*/
         [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
 
-        // Sidebar items:
+        // Sidebar search
         [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
+            'topnav_right' => true,
         ],
+
+        // Inicio
         [
-           /* 'text' => 'blog',
-            'url' => 'admin/blog',
-            'can' => 'manage-blog',
-        */],
-        [
-          /*  'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
-        */],
-        ['header' => 'Administrar roles'],
-        [
-            'text' => 'Roles',
-            'url' => 'roles',
-            'icon' => 'fas fa-fw fa-user',
+            'text' => 'INICIO',
+            'url' => 'home',
+            'icon' => 'fas fa-fw fa-home',
+
         ],
+
+        // Roles y Usuarios
         [
-            'text' => 'Roles por usuario',
-            'url' => 'usuarios',
-            'icon' => 'fas fa-fw fa-user',
-            'can'  => 'ver-usuarios',
+            'text' => 'Administración',
+            'icon' => 'fas fa-users-cog',
+            'can' => 'ver-roles',
+            'submenu' => [
+                [
+                    'text' => 'Roles',
+                    'url'  => 'roles',
+                    'icon' => 'fas fa-user-shield',
+                    'can' => 'ver-roles',
+                ],
+                [
+                    'text' => 'Asignar roles',
+                    'url'  => 'usuarios',
+                    'icon' => 'fas fa-user-tag',
+                    'can'  => 'ver-usuarios',
+                ],
+                [
+                    'text' => 'Alta Usuarios',
+                    'url'  => 'usuarios/create',
+                    'icon' => 'fas fa-user-plus',
+                    'can'  => 'crear-usuarios',
+                ],
+            ],
+
         ],
-         ['header' => 'Administrar usuarios'],
+
+        // Clientes
         [
-            'text' => 'Alta Usuarios',
-            'url' => 'usuarios/create',
-            'icon' => 'fas fa-fw fa-user',
-            'can'  => 'crear-usuarios',
-        ],
-         ['header' => 'Panel de clientes'],
-         [
             'text' => 'Clientes',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fas fa-users',
+            'can' => 'ver-clientes',
+            'submenu' => [
+                [
+                    'text' => 'Listado Clientes',
+                    'url'  => 'clientes',
+                    'icon' => 'fas fa-list',
+                    'can' => 'ver-clientes',
+                ],
+                [
+                    'text' => 'Alta Clientes',
+                    'url'  => 'clientes/create',
+                    'icon' => 'fas fa-user-plus',
+                    'can' => 'crear-clientes',
+                ],
+            ],
+
         ],
-         ['header' => 'Panel de Facturas'],
-         [
-            'text' => 'Facturas',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
+
+        // Facturas
+        [
+            'text' => 'Facturación',
+            'icon' => 'fas fa-file-invoice-dollar',
+            'can' => 'ver-facturas',
+            'submenu' => [
+                [
+                    'text' => 'Listado de Facturas',
+                    'url'  => 'facturas',
+                    'icon' => 'fas fa-file-invoice',
+                    'can' => 'ver-facturas',
+                ],
+                [
+                    'text' => 'Alta Factura',
+                    'url'  => 'facturas/create',
+                    'icon' => 'fas fa-plus-circle',
+                    'can' => 'crear-facturas',
+                ],
+                [
+                    'text' => 'Facturacion Mensual',
+                    'url'  => 'facturas/facturacion-mensual',
+                    'icon' => 'fas fa-file-invoice',
+                    'can' => 'ver-facturas',
+                ]
+            ],
+
         ],
-         ['header' => 'Panel de Pagos'],
-         [
+
+        // Pagos
+        [
             'text' => 'Pagos',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fas fa-money-check-alt',
+            'can' => 'ver-pago',
+            'submenu' => [
+                [
+                    'text' => 'Listado de Pagos',
+                    'url'  => 'pagos',
+                    'icon' => 'fas fa-credit-card',
+                    'can' => 'ver-pago',
+                ],
+                [
+                    'text' => 'Ingresar Pago',
+                    'url'  => 'pagos/create',
+                    'icon' => 'fas fa-cash-register',
+                    'can' => 'crear-pago',
+                ],
+            ],
+
         ],
+        [
+            'text' => 'Notas',
+            'icon' => 'fas fa-file-invoice',
+            'can' => 'ver-facturas',
+            'submenu' => [
+                [
+                    'text' => 'Notas generadas',
+                    'url'  => 'notas/index',
+                    'icon' => 'fas fa-file-invoice', // Listado de facturas
+                ],
+            ],
+        ],
+
+        [
+            'text' => 'Reportes',
+            'icon' => 'fas fa-file-invoice',
+            'can' => 'ver-facturas',
+            'submenu' => [
+                [
+                    'text' => 'Reportes anuales',
+                    'url'  => 'reportes/index',
+                    'icon' => 'fas fa-file-invoice', // Listado de facturas
+                ],
+                [
+                    'text' => 'Reportes mensuales',
+                    'url'  => 'reportes/mensual',
+                    'icon' => 'fas fa-file-invoice', // Listado de facturas
+                ],
+            ],
+        ],
+    
+    ],
+
+
        /* [
             'text' => 'change_password',
             'url' => 'admin/settings',
             'icon' => 'fas fa-fw fa-lock',
-        */],
+        ],*/
         /*[
             'text' => 'multilevel',
             'icon' => 'fas fa-fw fa-share',
@@ -532,6 +633,18 @@ return [
                 ],
             ],
         ],
+
+        'Livewire' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js', // Requerido si usás Alpine (Livewire v3)
+                ],
+            ],
+        ],
+
     ],
 
     /*

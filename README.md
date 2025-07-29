@@ -12,7 +12,7 @@ cd facturadorprueba
 
 > ⚠️ Asegúrate de cambiar a la **rama principal del proyecto**, por ejemplo:
 ```bash
-git checkout nombre-de-la-rama``
+git checkout nombre-de-la-rama
 ```
 
 ---
